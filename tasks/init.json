@@ -1,0 +1,23 @@
+{
+  "summary": "Bootstrap a node with puppet-agent",
+  "supports_noop": true,
+  "input_method": "stdin",
+  "parameters": {
+    "master": {
+      "description": "The master from which the puppet-agent should be bootstrapped.",
+      "type": "String"
+    },
+    "ca-fingerprint": {
+      "description": "The expected CA fingerprint of the master.",
+      "type": "String"
+    },
+    "certname": {
+      "description": "The certname with which the node should be bootstrapped.",
+      "type": "Optional[String]"
+    },
+    "dns-alt-names": {
+      "description": "The DNS alt names with which the agent certificate should be generated.",
+      "type": "Optional[String]"
+    }
+  }
+}

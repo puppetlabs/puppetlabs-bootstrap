@@ -1,0 +1,45 @@
+#!/opt/puppetlabs/puppet/bin/ruby
+
+require 'json'
+
+def validate(value)
+  if value && value.include?("'")
+    $stderr.puts "Single-quote is not allowed in arguments"
+    exit 1
+  end
+end
+
+args = JSON.parse(STDIN.read)
+master = args['master']
+ca_fingerprint = args['ca-fingerprint']
+certname = args['certname']
+alt_names = args['dns-alt-names']
+
+validate(certname)
+validate(alt_names)
+
+agent_args = ''
+agent_args << "agent:certname='#{certname}' " if certname
+agent_args << "agent:dns_alt_names='#{alt_names}' " if alt_names
+
+install_script = <<-SCRIPT
+set -e
+
+[ -f /etc/puppetlabs/puppet/ssl/certs/ca.pem ] || curl -sko /etc/puppetlabs/puppet/ssl/certs/ca.pem https://#{master}:8140/puppet-ca/v1/certificates/ca.pem
+
+expected_fingerprint="#{ca_fingerprint.to_s.upcase}"
+if [ -n "${expected_fingerprint?}" ]; then
+  actual_fingerprint="$(openssl x509 -fingerprint -in /etc/puppetlabs/puppet/ssl/certs/ca.pem -noout | cut -f2 -d=)"
+  if [ "${actual_fingerprint?}" != "${expected_fingerprint}" ]; then
+    echo "CA fingerprint ${actual_fingerprint?} does not match expected fingerprint ${expected_fingerprint?}"
+    exit 1
+  fi
+fi
+
+curl -s --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem https://#{master}:8140/packages/current/install.bash | bash -s #{agent_args}
+SCRIPT
+
+system(install_script)
+
+exit $?.exitstatus
+
