@@ -7,12 +7,11 @@ def install_bolt_on(hosts)
   on(hosts, "/opt/puppetlabs/puppet/bin/gem install --source http://rubygems.delivery.puppetlabs.net bolt -v '> 0.0.1'", acceptable_exit_codes: [0, 1]).stdout
 end
 
-#XXX only install on master
-run_puppet_install_helper
-install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
-install_bolt_on(hosts) unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
-install_module_on(hosts)
-install_module_dependencies_on(hosts)
+run_puppet_install_helper_on(master)
+install_ca_certs_on(master) unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
+install_bolt_on(master)
+install_module_on(master)
+install_module_dependencies_on([master])
 
 UNSUPPORTED_PLATFORMS = %w[Windows Solaris AIX].freeze
 
