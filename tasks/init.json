@@ -7,9 +7,9 @@
       "description": "The master from which the puppet-agent should be bootstrapped.",
       "type": "String"
     },
-    "ca_fingerprint": {
-      "description": "The expected CA fingerprint of the master.",
-      "type": "String"
+    "cacert_content": {
+      "description": "The expected CA certificate content for the master.",
+      "type": "Optional[String]"
     },
     "certname": {
       "description": "The certname with which the node should be bootstrapped.",
