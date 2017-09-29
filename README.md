@@ -4,86 +4,55 @@
 #### Table of Contents
 
 1. [Description](#description)
-2. [Setup - The basics of getting started with package task](#setup)
-    * [Setup requirements](#setup-requirements)
+2. [Requirements](#requirements)
 3. [Usage - Configuration options and additional functionality](#usage)
-4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+4. [Reference - An under-the-hood peek at what the task is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [Getting help - Some Helpful commands](#getting-help)
 
 ## Description
 
-This module provides the bootstrap task. This allows you to bootstrap puppet-agent on new hosts via ssh. It requires Puppet 5 or bolt installed
+This module provides the bootstrap task. This allows you to install puppet-agent on un-puppeted hosts via the ssh transport.
 
-## Setup
+## Requirements
 
-### Setup Requirements
-
-This module requires either Puppet enterprise or Bolt to function.
+This module requires both the `bolt` task runner and a Puppet Enterprise 2017.3 or later master to be installed on the machine from which you are running bolt commands (the controller node). Machines receiving task requests must have bash for now. (See [Limitations](#limitations) for more info.)
 
 ## Usage
 
-There are a number of ways to execute the bootstrap task. The examples below check the presence of the hosts bootstrap state. 
+To run the bootstrap task, use the bolt command, specifying the PE master from which the puppet-agent package should be installed and to which the agent should submit its certificate for signing.
 
-VIA PE-console see link_here
+#### Example: Basic usage
 
-<!--
-Via BOLT more information here LINK
-```bolt
-bolt task package status vim
-```
+On the command line, run `bolt task run bootstrap master=<master's fqdn> --nodes x,y,z --modules /path/to/modules`
 
-Via the PE CLI, more information here LINK
+#### Example: Verify the master's CA on initial connection
 
-```pe
-puppet task package status vim
-```
+Optionally to validate the connection during the boostrap process, specify the puppet master's CA cert: `bolt task run bootstrap master=<master's fqdn> cacert_content="$(cat /etc/puppetlabs/puppet/ssl/certs/ca.pem)" --nodes x,y,z --modules /path/to/modules`
+
+#### Example: Specify a custom certname
+
+Optionally to install the puppet-agent with a certname other than the fqdn of the target node, specify the custom certname: `bolt task run bootstrap master=<master's fqdn> certname=<custom certname> --nodes x,y,z --modules /path/to/modules`
+
+#### Example: Specify custom dns alt names
+
+Optionally to install the puppet-agent with custom dns alt names, specify the custom dns alt names: `bolt task run bootstrap master=<master's fqdn> dns_alt_names=<comma-separated list of alt names for the node> --nodes x,y,z --modules /path/to/modules` (see [Compile master installation](https://docs.puppet.com/pe/latest/install_multimaster.html) documentation for more info).
+
+You can also run tasks in the PE console. See PE task documentation for complete information.
 
 ## Reference
 
-To get the availible actions and parameters run
+To view the available actions and parameters, on the command line, run `puppet task show bootstrap` or see the bootstrap module page on the [Forge](https://forge.puppet.com/puppetlabs/bootstrap/tasks).
 
-```pe
-puppet task show package
-```
+## Limitations
 
-```bolt
-puppet task show package
-```
+The bootstrap task currently only runs in bash and expects unix paths to exist. A windows version will be added later.
 
-or go to https://forge.puppet.com/puppetlabs/package/tasks
+The bootstrap task currently installs the agent via the Puppet Enterprise package management tools, and FOSS repository support will be added later. See the [Puppet Enterprise](https://docs.puppet.com/pe/latest/install_agents.html) documentation for more information.
 
-## Development
+## Getting Help
 
-Here is a quick how to get up and running 
-```
-git clone git@github.com:puppetlabs/bootstrap.git
-```
-```
-bundle install --path .bundle/gems/
-```
-```
-BEAKER_destroy=no PUPPET_INSTALL_TYPE=pe BEAKER_PE_DIR=http://enterprise.delivery.puppetlabs.net/2017.3/ci-ready  BEAKER_PE_VER=2017.3.0-rc8-41-g4981bd3 BEAKER_set=centos7-pooler  bundle exec rspec spec/acceptance
-```
+To display help for the package task, run `puppet task show package`
 
-This will spit out a vmpooler machine name you can ssh to
+To show help for the bolt CLI, run `bolt task run --help`
 
-```
-ssh -i ~/.ssh/id_rsa-acceptance root@<VMPOOLER HOSTNAME FROM ABOVE&gt;
-```
-
-show the status of the openssl package (use the actual name of your node)
-```
-puppet task run package --nodes cgx1boldbmbi3vn.delivery.puppetlabs.net action=status package=openssl
-```
-
-display help for package
-```
-puppet task show package
-```
-
-show help for the task cli
-```
-puppet task run --help
-```
--->
