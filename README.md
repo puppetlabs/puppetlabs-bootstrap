@@ -52,7 +52,7 @@ The bootstrap task currently installs the agent via the Puppet Enterprise packag
 
 ## Getting Help
 
-To display help for the package task, run `puppet task show package`
+To display help for the script task, run `puppet task show script`
 
 To show help for the bolt CLI, run `bolt task run --help`
 
