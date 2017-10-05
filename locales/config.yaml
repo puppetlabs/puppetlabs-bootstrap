@@ -4,11 +4,11 @@
 gettext:
   # This is used for the name of the .pot and .po files; they will be
   # called <project_name>.pot?
-  project_name: bootstrap
+  project_name: puppetlabs-bootstrap
   # This is used in comments in the .pot and .po files to indicate what
   # project the files belong to and should bea little more desctiptive than
   # <project_name>
-  package_name: bootstrap
+  package_name: puppetlabs-bootstrap
   # The locale that the default messages in the .pot file are in
   default_locale: en
   # The email used for sending bug reports.
