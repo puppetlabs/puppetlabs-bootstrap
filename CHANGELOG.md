@@ -1,11 +1,8 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
 ## Release 0.1.0
+This is the initial release of the bootstrap task.
 
-**Features**
-
-**Bugfixes**
-
-**Known Issues**
+## Features
+- Bootstrap a node with puppet-agent, pointing it at a master.
+- Check the CA certificate of the master.
+- Set the DNS alt names for the agent.
+- Set the certname with which the node should be bootstrapped.
