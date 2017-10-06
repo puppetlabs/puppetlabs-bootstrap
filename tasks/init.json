@@ -1,6 +1,5 @@
 {
-  "summary": "Bootstrap a node with puppet-agent",
-  "supports_noop": true,
+  "description": "Bootstrap a node with puppet-agent",
   "input_method": "environment",
   "parameters": {
     "master": {
