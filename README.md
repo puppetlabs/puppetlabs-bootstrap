@@ -46,13 +46,12 @@ To view the available actions and parameters, on the command line, run `puppet t
 
 ## Limitations
 
-The bootstrap task currently only runs in bash and expects unix paths to exist. A windows version will be added later.
+The bootstrap task currently only runs in bash and expects unix paths to exist. Windows functionality will be added later.
 
 The bootstrap task currently installs the agent via the Puppet Enterprise package management tools, and FOSS repository support will be added later. See the [Puppet Enterprise](https://docs.puppet.com/pe/latest/install_agents.html) documentation for more information.
 
 ## Getting Help
 
-To display help for the script task, run `puppet task show script`
+To display help for the bootstrap task, run `puppet task show bootstrap`
 
-To show help for the bolt CLI, run `bolt task run --help`
-
+To show help for the task CLI, run `puppet task run --help` or `bolt task run --help`
