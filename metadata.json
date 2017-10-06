@@ -4,7 +4,7 @@
   "author": "puppet",
   "summary": "Tasks that bootstrap puppet-agent",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/puppetlabs/puppetlabs-bootstrap",
   "dependencies": [],
   "operatingsystem_support": [
     {
