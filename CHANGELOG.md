@@ -1,3 +1,9 @@
+## Release 0.1.1
+Fix bash script.
+
+## Fixes
+- Remove Function keyword from bash script.
+
 ## Release 0.1.0
 This is the initial release of the bootstrap task.
 
