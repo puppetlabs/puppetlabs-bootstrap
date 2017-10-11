@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function validate() {
+validate() {
   if $(echo $1 | grep \' > /dev/null) ; then
     echo "Single-quote is not allowed in arguments" > /dev/stderr
     exit 1
