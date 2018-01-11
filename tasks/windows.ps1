@@ -16,11 +16,18 @@ Function Validate-Parameter {
 Validate-Parameter($certname)
 Validate-Parameter($alt_names)
 
-if ($certname) {
+if ($certname.Length -eq 0) {
   $certname_arg = "agent:certname='$certname' "
 }
-if ($dns_alt_names) {
+else {
+  $fqdn = [System.Net.Dns]::GetHostByName(($env:computerName)).Hostname 
+  $certname_arg = "agent:certname='$fqdn' "
+}
+if ($dns_alt_names.Length -eq 0) {
   $alt_names_arg = "agent:dns_alt_names='$alt_names' "
+}
+else {
+  $alt_names_arg = ""
 }
 if ($cacert_content) {
   New-Item -ItemType Directory -Force -Path "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs"
