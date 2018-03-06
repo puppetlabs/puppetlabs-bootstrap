@@ -54,3 +54,8 @@ Gemfile:
 Rakefile:
   requires:
     - puppet_blacksmith/rake_tasks
+    - puppet-lint/tasks/puppet-lint
+
+.yardopts:
+  optional:
+    - --output-dir docs/
