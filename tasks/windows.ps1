@@ -16,14 +16,14 @@ Function Validate-Parameter {
 Validate-Parameter($certname)
 Validate-Parameter($alt_names)
 
-if ($certname.Length -eq 0) {
+if ($certname.Length -gt 0) {
   $certname_arg = "agent:certname='$certname' "
 }
 else {
   $fqdn = [System.Net.Dns]::GetHostByName(($env:computerName)).Hostname 
   $certname_arg = "agent:certname='$fqdn' "
 }
-if ($dns_alt_names.Length -eq 0) {
+if ($dns_alt_names.Length -gt 0) {
   $alt_names_arg = "agent:dns_alt_names='$alt_names' "
 }
 else {
