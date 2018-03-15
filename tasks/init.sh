@@ -7,10 +7,12 @@ validate() {
   fi
 }
 
-master=$PT_master
-cacert_content=$PT_cacert_content
-certname=$PT_certname
-alt_names=$PT_dns_alt_names
+master="$PT_master"
+cacert_content="$PT_cacert_content"
+certname="$PT_certname"
+alt_names="$PT_dns_alt_names"
+custom_attribute="$PT_custom_attribute"
+extension_request="$PT_extension_request"
 
 validate $certname
 validate $alt_names
@@ -20,6 +22,12 @@ if [ -n "${certname?}" ] ; then
 fi
 if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
+fi
+if [ -n "${custom_attribute?}" ] ; then
+  custom_attributes_arg="custom_attributes:$custom_attribute "
+fi
+if [ -n "${extension_request?}" ] ; then
+  extension_requests_arg="extension_requests:$extension_request "
 fi
 
 set -e
@@ -32,4 +40,4 @@ else
   curl_arg="-k"
 fi
 
-curl -s ${curl_arg?} https://${master}:8140/packages/current/install.bash | bash -s ${certname_arg}${alt_names_arg} && echo "Installed"
+curl -s ${curl_arg?} https://${master}:8140/packages/current/install.bash | bash -s ${certname_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg} && echo "Installed"

@@ -40,6 +40,14 @@ Optionally to install the puppet-agent with custom dns alt names, specify the cu
 
 You can also run tasks in the PE console. See PE task documentation for complete information.
 
+#### Example: Specify a custom_attribute
+
+Optionally to install the puppet-agent and adding a setting to puppet.conf and including it in the custom_attributes section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> custom_attribute=key=value --nodes x,y,z --modules /path/to/modules`
+
+#### Example: Specify a extension_request
+
+Optionally to install the puppet-agent and adding a setting to puppet.conf and including it in the extension_requests section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> extension_request=key=value --nodes x,y,z --modules /path/to/modules`
+
 ## Reference
 
 To view the available actions and parameters, on the command line, run `puppet task show bootstrap` or see the bootstrap module page on the [Forge](https://forge.puppet.com/puppetlabs/bootstrap/tasks).
