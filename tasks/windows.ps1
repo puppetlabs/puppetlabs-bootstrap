@@ -41,12 +41,6 @@ if (!$PSBoundParameters.ContainsKey('CertName'))
   $CertName = Get-HostName
 }
 
-if ($DNS_Alt_Names.Length -gt 0) {
-  $alt_names_arg = "agent:dns_alt_names='$alt_names' "
-}
-else {
-  $alt_names_arg = ""
-}
 if ($CACert_Content) {
   New-Item -ItemType Directory -Force -Path "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs"
   Out-File -InputObject $CACert_Content -FilePath "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs\ca.pem" -Encoding ascii -Force
@@ -55,5 +49,13 @@ if ($CACert_Content) {
 [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 $webClient = New-Object System.Net.WebClient
 $webClient.DownloadFile("https://${Master}:8140/packages/current/install.ps1", $env:temp + '\install.ps1')
-&($env:temp + '\install.ps1') "agent:certname='$CertName' " $alt_names_arg
+
+$installerArgs = @{
+  Arguments = @("agent:certname='$CertName'")
+}
+if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
+  $installerArgs.Arguments += "agent:dns_alt_names='$DNS_Alt_Names'"
+}
+
+&($env:temp + '\install.ps1') @installerArgs
 Write-Output 'Installed'
