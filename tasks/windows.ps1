@@ -25,13 +25,22 @@ Param(
   $DNS_Alt_Names
 )
 
-if ($CertName.Length -gt 0) {
-  $certname_arg = "agent:certname='$CertName' "
+function Get-HostName
+{
+  $ipAddress = ([System.Net.Dns]::GetHostEntry([System.Environment]::MachineName)).AddressList |
+    ? { $_.AddressFamily -eq 'InterNetwork' } |
+    Select -First 1 -ExpandProperty IPAddressToString
+
+  $name = [System.Net.Dns]::GetHostEntry($ipAddress).HostName
+  Write-Verbose "Resolved current hostname to $name"
+  return $name
 }
-else {
-  $fqdn = [System.Net.Dns]::GetHostByName(($env:computerName)).Hostname
-  $certname_arg = "agent:certname='$fqdn' "
+
+if (!$PSBoundParameters.ContainsKey('CertName'))
+{
+  $CertName = Get-HostName
 }
+
 if ($DNS_Alt_Names.Length -gt 0) {
   $alt_names_arg = "agent:dns_alt_names='$alt_names' "
 }
@@ -46,5 +55,5 @@ if ($CACert_Content) {
 [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 $webClient = New-Object System.Net.WebClient
 $webClient.DownloadFile("https://${Master}:8140/packages/current/install.ps1", $env:temp + '\install.ps1')
-&($env:temp + '\install.ps1') $certname_arg $alt_names_arg
+&($env:temp + '\install.ps1') "agent:certname='$CertName' " $alt_names_arg
 Write-Output 'Installed'
