@@ -36,15 +36,36 @@ function Get-HostName
   return $name
 }
 
+function Get-CA($Master)
+{
+  $verificationCallback = [Net.ServicePointManager]::ServerCertificateValidationCallback
+  try
+  {
+    # temporarily disable SSL verification while downloading CA
+    [Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+    $caUri = "https://${Master}:8140/puppet-ca/v1/certificate/ca"
+    Write-Verbose "Downloading root ca cert from $caUri"
+    return (New-Object System.Net.WebClient).DownloadString($caUri)
+  }
+  finally
+  {
+    # restore original chain validation
+    [Net.ServicePointManager]::ServerCertificateValidationCallback = $verificationCallback
+  }
+}
+
 if (!$PSBoundParameters.ContainsKey('CertName'))
 {
   $CertName = Get-HostName
 }
 
-if ($CACert_Content) {
-  New-Item -ItemType Directory -Force -Path "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs"
-  Out-File -InputObject $CACert_Content -FilePath "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs\ca.pem" -Encoding ascii -Force
+if (!$PSBoundParameters.ContainsKey('CACert_Content') -or [String]::IsNullOrEmpty($CACert_Content))
+{
+  $CACert_Content = Get-CA -Master $Master
 }
+
+New-Item -ItemType Directory -Force -Path "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs"
+Out-File -InputObject $CACert_Content -FilePath "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs\ca.pem" -Encoding ascii -Force
 
 [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 $installerUri = "https://${Master}:8140/packages/current/install.ps1"
