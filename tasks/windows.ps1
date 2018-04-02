@@ -47,8 +47,9 @@ if ($CACert_Content) {
 }
 
 [Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-$webClient = New-Object System.Net.WebClient
-$webClient.DownloadFile("https://${Master}:8140/packages/current/install.ps1", $env:temp + '\install.ps1')
+$installerUri = "https://${Master}:8140/packages/current/install.ps1"
+$installer = (New-Object System.Net.WebClient).DownloadString($installerUri)
+$installer = [ScriptBlock]::Create($installer)
 
 $installerArgs = @{
   Arguments = @("agent:certname='$CertName'")
@@ -57,5 +58,5 @@ if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
   $installerArgs.Arguments += "agent:dns_alt_names='$DNS_Alt_Names'"
 }
 
-&($env:temp + '\install.ps1') @installerArgs
+& $installer @installerArgs
 Write-Output 'Installed'
