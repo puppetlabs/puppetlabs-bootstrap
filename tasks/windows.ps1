@@ -121,6 +121,16 @@ function Get-InstallerScriptBlock($Master, $RootCertificate)
   }
 }
 
+function Out-CA($Content)
+{
+  # https://github.com/puppetlabs/puppet-specifications/blob/master/file_paths.md#puppet-agent-windows
+  $sslDirectory = Join-Path $ENV:ProgramData 'PuppetLabs\puppet\etc\ssl\certs'
+  $caFilePath = Join-Path $sslDirectory 'ca.pem'
+  New-Item -ItemType Directory -Path $sslDirectory | Out-Null
+  Write-Verbose "Writing $($Content.Length) length string to $caFilePath"
+  $Content | Out-File -FilePath $caFilePath -Encoding ASCII
+}
+
 if (!$PSBoundParameters.ContainsKey('CertName'))
 {
   $CertName = Get-HostName
@@ -131,9 +141,7 @@ if (!$PSBoundParameters.ContainsKey('CACert_Content') -or [String]::IsNullOrEmpt
   $CACert_Content = Get-CA -Master $Master
 }
 
-New-Item -ItemType Directory -Force -Path "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs"
-Out-File -InputObject $CACert_Content -FilePath "$env:ProgramData\PuppetLabs\puppet\etc\ssl\certs\ca.pem" -Encoding ascii -Force
-
+Out-CA -Content $CACert_Content
 $MasterCA = New-CertificateFromContent -Content $CACert_Content
 $installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $MasterCA
 $MasterCA.Dispose()
