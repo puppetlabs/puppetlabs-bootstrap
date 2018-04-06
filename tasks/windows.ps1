@@ -131,27 +131,38 @@ function Out-CA($Content)
   $Content | Out-File -FilePath $caFilePath -Encoding ASCII
 }
 
-if (!$PSBoundParameters.ContainsKey('CertName'))
+function Invoke-SimplifiedInstaller
 {
-  $CertName = Get-HostName
+  [CmdletBinding()]
+  param
+  (
+    $Master,
+    $CertName,
+    $CACertContent,
+    $ExtraConfig = @{}
+  )
+
+  Out-CA -Content $CACertContent
+  $masterCA = New-CertificateFromContent -Content $CACertContent
+  $installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $masterCA
+  $masterCA.Dispose()
+
+  $ExtraConfig.Add('agent:certname', $CertName)
+  $installerArgs = @{
+    Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
+  }
+
+  Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
+  & $installer @installerArgs
 }
 
-if (!$PSBoundParameters.ContainsKey('CACert_Content') -or [String]::IsNullOrEmpty($CACert_Content))
-{
-  $CACert_Content = Get-CA -Master $Master
-}
-
-Out-CA -Content $CACert_Content
-$MasterCA = New-CertificateFromContent -Content $CACert_Content
-$installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $MasterCA
-$MasterCA.Dispose()
-
-$installerArgs = @{
-  Arguments = @("agent:certname='$CertName'")
+$options = @{
+  Master = $Master
+  CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0]
+  CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
 }
 if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
-  $installerArgs.Arguments += "agent:dns_alt_names='$DNS_Alt_Names'"
+  $options.ExtraConfig = @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
 }
 
-& $installer @installerArgs
-Write-Output 'Installed'
+Invoke-SimplifiedInstaller @options
