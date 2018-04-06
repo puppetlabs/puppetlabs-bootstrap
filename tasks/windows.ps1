@@ -131,6 +131,11 @@ function Out-CA($Content)
   $Content | Out-File -FilePath $caFilePath -Encoding ASCII
 }
 
+function ConvertTo-JsonString($string)
+{
+  ($string -replace '\\', '\\') -replace '\"', '\"'
+}
+
 function Invoke-SimplifiedInstaller
 {
   [CmdletBinding()]
@@ -156,13 +161,48 @@ function Invoke-SimplifiedInstaller
   & $installer @installerArgs
 }
 
-$options = @{
-  Master = $Master
-  CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0]
-  CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
-}
-if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
-  $options.ExtraConfig = @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
-}
+try
+{
+  $options = @{
+    Master = $Master
+    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0]
+    CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
+  }
+  if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
+    $options.ExtraConfig = @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
+  }
 
-Invoke-SimplifiedInstaller @options
+  Invoke-SimplifiedInstaller @options
+  $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
+    % { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
+  $jsonHostName = ConvertTo-JsonString (Get-HostName)
+  $jsonCertName = ConvertTo-JsonString $options.CertName
+
+  # TODO: could use ConvertTo-Json, but that requires PS3
+  # if embedding in literal, should make sure Name / Status doesn't need escaping
+  Write-Host @"
+{
+  "host"     : "$jsonHostName",
+  "certname" : "$jsonCertName",
+  "master"   : "$Master",
+  "config"   : "$jsonSafeConfig",
+  "status"   : "success"
+}
+"@
+}
+catch
+{
+  Write-Host @"
+  {
+    "status"   : "failure",
+    "host"     : "$jsonHostName",
+    "certname" : "$jsonCertName",
+    "master"   : "$Master",
+    "_error"   : {
+      "msg" : "Unable to install agent on $jsonHostName with certname ${jsonCertName}: $(ConvertTo-JsonString $_.Exception.Message)",
+      "kind": "powershell_error",
+      "details" : {}
+    }
+  }
+"@
+}
