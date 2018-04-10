@@ -143,7 +143,7 @@ function Out-CA($Content)
 
 function ConvertTo-JsonString($string)
 {
-  ($string -replace '\\', '\\') -replace '\"', '\"'
+  (($string -replace '\\', '\\') -replace '\"', '\"') -replace '[\u0000-\u001F]', ' '
 }
 
 function New-OptionsHash($Prefix, $Values)
@@ -175,7 +175,7 @@ function Invoke-SimplifiedInstaller
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
-  & $installer @installerArgs
+  & $installer @installerArgs 2>&1
 }
 
 try
@@ -196,7 +196,8 @@ try
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
 
-  Invoke-SimplifiedInstaller @options
+  $installerOutput = Invoke-SimplifiedInstaller @options
+  $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
     % { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
   $jsonHostName = ConvertTo-JsonString (Get-HostName)
@@ -210,6 +211,7 @@ try
   "certname" : "$jsonCertName",
   "master"   : "$Master",
   "config"   : "$jsonSafeConfig",
+  "output"   : "$jsonOutput",
   "status"   : "success"
 }
 "@
