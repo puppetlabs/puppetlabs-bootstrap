@@ -17,6 +17,14 @@
     "dns_alt_names": {
       "description": "The DNS alt names with which the agent certificate should be generated.",
       "type": "Optional[String]"
+    },
+    "custom_attribute": {
+      "description": "This setting is added to puppet.conf and included in the custom_attributes section of csr_attributes.yaml",
+      "type": "Optional[Array[Pattern[/\\w+=\\w+/]]]"
+    },
+    "extension_request": {
+      "description": "This setting is added to puppet.conf and included in the extension_requests section of csr_attributes.yaml",
+      "type": "Optional[Array[Pattern[/\\w+=\\w+/]]]"
     }
   }
 }

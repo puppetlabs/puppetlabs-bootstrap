@@ -22,7 +22,17 @@ Param(
       throw "Invalid DNS name `"$_`""
   }}; $True})]
   [String]
-  $DNS_Alt_Names
+  $DNS_Alt_Names,
+
+  [Parameter(Mandatory = $False)]
+  [ValidateScript({ $_ -match '\w+=\w+' })]
+  [String[]]
+  $Custom_Attribute,
+
+  [Parameter(Mandatory = $False)]
+  [ValidateScript({ $_ -match '\w+=\w+' })]
+  [String[]]
+  $Extension_Request
 )
 
 function Get-HostName
@@ -136,6 +146,13 @@ function ConvertTo-JsonString($string)
   ($string -replace '\\', '\\') -replace '\"', '\"'
 }
 
+function New-OptionsHash($Prefix, $Values)
+{
+  $hash = @{}
+  $Values | % { $k, $v = $_ -split '=',2; $hash."$Prefix`:$k" = $v }
+  $hash
+}
+
 function Invoke-SimplifiedInstaller
 {
   [CmdletBinding()]
@@ -167,9 +184,16 @@ try
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0]
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
+    ExtraConfig = @{}
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
-    $options.ExtraConfig = @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
+    $options.ExtraConfig += @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
+  }
+  if ($PSBoundParameters.ContainsKey('Custom_Attribute')) {
+    $options.ExtraConfig += (New-OptionsHash 'custom_attributes' $Custom_Attribute)
+  }
+  if ($PSBoundParameters.ContainsKey('Extension_Request')) {
+    $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
 
   Invoke-SimplifiedInstaller @options
