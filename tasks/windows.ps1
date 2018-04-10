@@ -167,7 +167,7 @@ function Invoke-SimplifiedInstaller
   Out-CA -Content $CACertContent
   $masterCA = New-CertificateFromContent -Content $CACertContent
   $installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $masterCA
-  $masterCA.Dispose()
+  if ($masterCA -is [System.IDisposable]) { [Void]$masterCA.Dispose() }
 
   $ExtraConfig.Add('agent:certname', $CertName)
   $installerArgs = @{
