@@ -13,6 +13,7 @@ certname="$PT_certname"
 alt_names="$PT_dns_alt_names"
 custom_attribute="$PT_custom_attribute"
 extension_request="$PT_extension_request"
+jq_missing="jq is required to parse CSR custom attributes or extension requests"
 
 validate $certname
 validate $alt_names
@@ -24,10 +25,14 @@ if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
 fi
 if [ -n "${custom_attribute?}" ] ; then
-  custom_attributes_arg="custom_attributes:$custom_attribute "
+  command -v jq >/dev/null 2>&1 || { echo $jq_missing >&2; exit 1; }
+  mapping='$x | map("custom_attributes:"+.)|join(" ")'
+  custom_attributes_arg=$(jq -n -r --argjson x $custom_attribute $mapping)
 fi
 if [ -n "${extension_request?}" ] ; then
-  extension_requests_arg="extension_requests:$extension_request "
+  command -v jq >/dev/null 2>&1 || { echo $jq_missing >&2; exit 1; }
+  mapping='$x | map("extension_requests:"+.)|join(" ")'
+  extension_requests_arg=$(jq -n -r --argjson x $extension_request $mapping)
 fi
 
 set -e
