@@ -40,4 +40,15 @@ else
   curl_arg="-k"
 fi
 
-curl -s ${curl_arg?} https://${master}:8140/packages/current/install.bash | bash -s ${certname_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg} && echo "Installed"
+if curl ${curl_arg?} https://${master}:8140/packages/current/install.bash -o /tmp/install.bash; then
+  if bash /tmp/install.bash ${certname_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}; then
+    echo "Installed"
+    exit 0
+  else
+    echo "Failed to run install.bash"
+    exit 1
+  fi
+else
+  echo "Failed to download install.bash"
+  exit 1
+fi
