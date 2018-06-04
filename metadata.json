@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-bootstrap",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "puppet",
   "summary": "Tasks that bootstrap puppet-agent",
   "license": "Apache-2.0",
