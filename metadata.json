@@ -2,9 +2,10 @@
   "name": "puppetlabs-bootstrap",
   "version": "0.3.0",
   "author": "puppet",
-  "summary": "Tasks that bootstrap puppet-agent",
+  "summary": "Tasks that bootstrap/install Puppet Enterprise agents on Linux and Windows",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-bootstrap",
+  "tags": ["puppet","enterprise","agent","install"],
   "dependencies": [
 
   ],
