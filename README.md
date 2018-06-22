@@ -12,11 +12,13 @@
 
 ## Description
 
-This module provides the bootstrap task. This allows you to install puppet-agent on un-puppeted hosts via the ssh transport.
+This module provides the bootstrap task. This allows you to install Puppet agents on un-puppeted hosts via the ssh or winrm transports.
 
 ## Requirements
 
-This module requires both the `bolt` task runner and a Puppet Enterprise 2017.3 or later master to be installed on the machine from which you are running bolt commands (the controller node). Machines receiving task requests must have bash for now. (See [Limitations](#limitations) for more info.)
+This module requires both the `bolt` gem on the machine from which you are running bolt commands (the controller node), and a Puppet Enterprise 2017.3 or later master hosting agent repositories.
+
+Linux machines receiving task requests must have bash for now.  Windows machines must have PowerShell. (See [Limitations](#limitations) for more info.)
 
 ## Usage
 
