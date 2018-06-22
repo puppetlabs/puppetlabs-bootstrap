@@ -22,7 +22,7 @@ Linux machines receiving task requests must have bash for now.  Windows machines
 
 ## Usage
 
-To run the bootstrap task, use the bolt command, specifying the PE master from which the puppet-agent package should be installed and to which the agent should submit its certificate for signing.
+To run the bootstrap task, use the bolt command, specifying the PE master from which the Puppet agent package should be installed and to which the agent should submit its certificate for signing.
 
 #### Example: Basic usage
 
@@ -38,12 +38,12 @@ Optionally to validate the connection during the bootstrap process, specify the 
 
 #### Example: Specify a custom certname
 
-Optionally to install the puppet-agent with a certname other than the fqdn of the target node, specify the custom certname:
+Optionally to install the Puppet agent with a certname other than the fqdn of the target node, specify the custom certname:
 `bolt task run bootstrap::linux master=<master's fqdn> certname=<custom certname> --nodes x,y,z --modulepath /path/to/modules`
 
 #### Example: Specify custom dns alt names
 
-Optionally to install the puppet-agent with custom dns alt names, specify the custom dns alt names:
+Optionally to install the Puppet agent with custom dns alt names, specify the custom dns alt names:
 `bolt task run bootstrap::linux master=<master's fqdn> dns_alt_names=<comma-separated list of alt names for the node> --nodes x,y,z --modulepath /path/to/modules`
 (see [Compile master installation](https://docs.puppet.com/pe/latest/install_multimaster.html) documentation for more info).
 
@@ -51,11 +51,11 @@ You can also run tasks in the PE console. See PE task documentation for complete
 
 #### Example: Specify a custom_attribute
 
-Optionally to install the puppet-agent and adding a setting to puppet.conf and including it in the custom_attributes section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> custom_attribute=key=value --nodes x,y,z --modulepath /path/to/modules`
+Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the custom_attributes section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> custom_attribute=key=value --nodes x,y,z --modulepath /path/to/modules`
 
 #### Example: Specify a extension_request
 
-Optionally to install the puppet-agent and adding a setting to puppet.conf and including it in the extension_requests section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> extension_request=key=value --nodes x,y,z --modulepath /path/to/modules`
+Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the extension_requests section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> extension_request=key=value --nodes x,y,z --modulepath /path/to/modules`
 
 ## Reference
 
