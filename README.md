@@ -39,6 +39,11 @@ Optionally to validate the connection during the bootstrap process, specify the 
 Optionally to install the puppet-agent with a certname other than the fqdn of the target node, specify the custom certname:
 `bolt task run bootstrap::linux master=<master's fqdn> certname=<custom certname> --nodes x,y,z --modulepath /path/to/modules`
 
+#### Example: Specify the environment
+
+Optionally to install the puppet-agent with a specific environment other than the default environment `production`, specify the custom environment:
+`bolt task run bootstrap::linux master=<master's fqdn> environment=<custom environment> --nodes x,y,z --modulepath /path/to/modules`
+
 #### Example: Specify custom dns alt names
 
 Optionally to install the puppet-agent with custom dns alt names, specify the custom dns alt names:
