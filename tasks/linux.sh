@@ -10,15 +10,20 @@ validate() {
 master="$PT_master"
 cacert_content="$PT_cacert_content"
 certname="$PT_certname"
+environment="$PT_environment"
 alt_names="$PT_dns_alt_names"
 custom_attribute="$PT_custom_attribute"
 extension_request="$PT_extension_request"
 
 validate $certname
+validate $environment
 validate $alt_names
 
 if [ -n "${certname?}" ] ; then
   certname_arg="agent:certname='${certname}' "
+fi
+if [ -n "${environment?}" ] ; then
+  alt_names_arg="agent:environment='${environment}' "
 fi
 if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
