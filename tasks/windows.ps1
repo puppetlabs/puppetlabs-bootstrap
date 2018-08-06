@@ -25,6 +25,10 @@ Param(
   $DNS_Alt_Names,
 
   [Parameter(Mandatory = $False)]
+  [String]
+  $Environment,
+
+  [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
   $Custom_Attribute,
@@ -194,6 +198,9 @@ try
   }
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
+  }
+  if ($SBoundParameters.ContainsKey('Environment')) {
+    $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
 
   $installerOutput = Invoke-SimplifiedInstaller @options
