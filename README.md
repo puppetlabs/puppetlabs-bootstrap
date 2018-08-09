@@ -70,6 +70,8 @@ To view the available actions and parameters, on the command line, run `puppet t
 
 The bootstrap task currently installs the agent via the Puppet Enterprise package management tools, and FOSS repository support will be added later. See the [Puppet Enterprise](https://docs.puppet.com/pe/latest/install_agents.html) documentation for more information.
 
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-bootstrap/blob/master/metadata.json)
+
 ## Getting Help
 
 To display help for the bootstrap task, run `puppet task show bootstrap::linux` or `puppet task show bootstrap::windows`
