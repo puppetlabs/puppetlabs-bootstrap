@@ -3,7 +3,7 @@
   "input_method": "powershell",
   "parameters": {
     "master": {
-      "description": "The master from which the puppet-agent should be bootstrapped",
+      "description": "The fqdn of the master from which the puppet-agent should be bootstrapped",
       "type": "String"
     },
     "cacert_content": {
