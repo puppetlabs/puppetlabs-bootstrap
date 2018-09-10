@@ -1,17 +1,55 @@
 ---
 HOSTS:
   windows2012-64-1:
-    pe_dir:
-    pe_ver:
-    pe_upgrade_dir:
-    pe_upgrade_ver:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
     hypervisor: vmpooler
     platform: windows-2012-64
+    packaging_platform: windows-2012-x64
     ruby_arch: x64
     template: win-2012-x86_64
     roles:
     - agent
     - default
+  win-2016-x86_64-1:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
+    hypervisor: vmpooler
+    platform: windows-2012-64
+    packaging_platform: windows-2012-x64
+    ruby_arch: x64
+    template: win-2016-x86_64
+    roles:
+    - agent
+  redhat7-64-1:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
+    hypervisor: vmpooler
+    platform: el-7-x86_64
+    packaging_platform: el-7-x86_64
+    template: redhat-7-x86_64
+    roles:
+    - agent
+  redhat7-64-2:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
+    hypervisor: vmpooler
+    platform: el-7-x86_64
+    packaging_platform: el-7-x86_64
+    template: redhat-7-x86_64
+    roles:
+    - agent
+    - master
+    - database
+    - dashboard
 CONFIG:
   nfs_server: none
   consoleport: 443
