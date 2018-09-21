@@ -199,7 +199,7 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
-  if ($SBoundParameters.ContainsKey('Environment')) {
+  if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
 
