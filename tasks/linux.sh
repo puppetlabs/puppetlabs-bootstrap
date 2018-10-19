@@ -23,7 +23,7 @@ if [ -n "${certname?}" ] ; then
   certname_arg="agent:certname='${certname}' "
 fi
 if [ -n "${environment?}" ] ; then
-  alt_names_arg="agent:environment='${environment}' "
+  environment_arg="agent:environment='${environment}' "
 fi
 if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
@@ -46,7 +46,7 @@ else
 fi
 
 if curl ${curl_arg?} https://${master}:8140/packages/current/install.bash -o /tmp/install.bash; then
-  if bash /tmp/install.bash ${certname_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}; then
+  if bash /tmp/install.bash ${certname_arg}${environment_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}; then
     echo "Installed"
     exit 0
   else
