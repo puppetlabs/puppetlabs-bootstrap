@@ -52,7 +52,9 @@
       "operatingsystem": "windows",
       "operatingsystemrelease": [
         "2008 R2",
-        "2012 R2"
+        "2012 R2",
+        "10",
+        "2016"FM-7512
       ]
     }
   ],
