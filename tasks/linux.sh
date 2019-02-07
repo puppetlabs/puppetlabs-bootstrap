@@ -1,10 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
 validate() {
   if $(echo $1 | grep \' > /dev/null) ; then
     echo "Single-quote is not allowed in arguments" > /dev/stderr
     exit 1
   fi
+}
+
+convert_array_string() {
+  array_string=$2
+  array_string=${array_string// /}
+  array_string=${array_string//,/ }
+
+  array_string=${array_string##[}
+  array_string=${array_string%]}
+
+  eval array=($array_string)
+
+  for item in "${array[@]}"
+  do
+    result="${result} $1:$item "
+  done
+  echo $result
 }
 
 master="$PT_master"
@@ -29,10 +46,10 @@ if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
 fi
 if [ -n "${custom_attribute?}" ] ; then
-  custom_attributes_arg="custom_attributes:$custom_attribute "
+  custom_attributes_arg="$(convert_array_string custom_attributes "${custom_attribute}") "
 fi
 if [ -n "${extension_request?}" ] ; then
-  extension_requests_arg="extension_requests:$extension_request "
+  extension_requests_arg="$(convert_array_string extension_requests "${extension_request}") "
 fi
 
 set -e
