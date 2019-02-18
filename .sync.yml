@@ -1,4 +1,7 @@
 ---
+.gitlab-ci.yml:
+  unmanaged: true
+
 .travis.yml:
   docker_sets:
     - set: docker/centos-7
@@ -8,6 +11,10 @@
   secure: ""
   branches:
     - release
+
+.yardopts:
+  optional:
+    - --output-dir docs/
 
 Gemfile:
   optional:
@@ -30,9 +37,6 @@ Rakefile:
   requires:
     - puppet-lint/tasks/puppet-lint
 
-.yardopts:
-  optional:
-    - --output-dir docs/
-
-.gitlab-ci.yml:
-  unmanaged: true
+spec/spec_helper.rb:
+  mock_with: ':rspec'
+  coverage_report: true
