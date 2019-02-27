@@ -186,7 +186,7 @@ try
 {
   $options = @{
     Master = $Master
-    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0]
+    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
     ExtraConfig = @{}
   }
