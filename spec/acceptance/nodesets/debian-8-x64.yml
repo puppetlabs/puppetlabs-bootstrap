@@ -1,10 +1,18 @@
+---
 HOSTS:
-  debian-8-x64:
-    roles:
-      - agent
-      - default
+  debian8:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
     platform: debian-8-amd64
-    hypervisor: vagrant
-    box: puppetlabs/debian-8.2-64-nocm
+    packaging_platform: debian-8-amd64
+    template: debian-8-x86_64
+    hypervisor: vmpooler
+    roles:
+    - agent
+    - default
 CONFIG:
-  type: foss
+  nfs_server: none
+  consoleport: 443
+  pooling_api: http://vmpooler.delivery.puppetlabs.net/

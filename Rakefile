@@ -75,3 +75,8 @@ EOM
   end
 end
 
+# spec_prep is required to setup fixtures used by the acceptance tests
+beaker_task = Rake::Task['beaker']
+spec_prep =  Rake::Task['spec_prep']
+beaker_task.enhance(beaker_task.prerequisite_tasks << spec_prep)
+
