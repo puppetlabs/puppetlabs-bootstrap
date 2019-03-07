@@ -70,7 +70,7 @@
     "agent",
     "install"
   ],
-  "pdk-version": "1.9.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates/",
-  "template-ref": "heads/master-0-ga3ee0e5"
+  "pdk-version": "1.8.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates",
+  "template-ref": "heads/master-0-gfde5699"
 }
