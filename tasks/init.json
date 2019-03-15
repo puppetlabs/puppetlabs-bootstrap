@@ -1,0 +1,6 @@
+{
+  "implementations": [
+    {"name": "windows.ps1", "requirements": ["powershell"], "input_method": "powershell"},
+    {"name": "linux.sh", "requirements": ["shell"], "input_method": "environment"}
+  ]
+}
