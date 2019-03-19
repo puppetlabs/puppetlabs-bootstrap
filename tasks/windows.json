@@ -30,5 +30,21 @@
       "description": "This setting is added to puppet.conf and included in the extension_requests section of csr_attributes.yaml",
       "type": "Optional[Array[Pattern[/\\w+=\\w+/]]]"
     }
+  },
+  "extensions": {
+    "discovery": {
+      "friendlyName": "Install Puppet agent on Windows",
+      "osFamily": "Windows",
+      "puppetInstall": true,
+      "type": ["host"],
+      "parameters": {
+          "master": {
+              "placeholder": "master.company.net"
+          },
+          "cacert_content": {
+              "placeholder": "-----BEGIN CERTIFICATE---- ... -----END CERTIFICATE-----"
+          }
+      }
+     }
   }
 }
