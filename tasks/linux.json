@@ -1,5 +1,6 @@
 {
   "description": "Bootstrap a node with puppet-agent for Linux",
+  "private": true,
   "input_method": "environment",
   "parameters": {
     "master": {
@@ -29,22 +30,6 @@
     "extension_request": {
       "description": "This setting is added to puppet.conf and included in the extension_requests section of csr_attributes.yaml",
       "type": "Optional[Array[Pattern[/\\w+=\\w+/]]]"
-    }
-  },
-  "extensions": {
-    "discovery": {
-      "friendlyName": "Install Puppet agent on Linux",
-      "osFamily": "linux",
-      "puppetInstall": true,
-      "type": ["host"],
-      "parameters": {
-          "master": {
-              "placeholder": "master.company.net"
-          },
-          "cacert_content": {
-              "placeholder": "-----BEGIN CERTIFICATE---- ... -----END CERTIFICATE-----"
-          }
-      }
     }
   }
 }
