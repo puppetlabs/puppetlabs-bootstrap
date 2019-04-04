@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [0.5.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/0.5.0) (2019-04-03)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/0.4.1...0.5.0)
+
+### Added
+
+- \(SEN-787\) Make linux and windows private [\#73](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/73) ([conormurraypuppet](https://github.com/conormurraypuppet))
+- \(SEN-787\) Add discovery extension metadata [\#72](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/72) ([conormurraypuppet](https://github.com/conormurraypuppet))
+- \(SEN-787\) Add implementation metadata [\#71](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/71) ([conormurraypuppet](https://github.com/conormurraypuppet))
+- \(MODULES-6989\) Multiple extension\_requests/custom\_attributes Linux task [\#61](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/61) ([eimlav](https://github.com/eimlav))
+
+### Fixed
+
+- Ensure certnames are \*always\* lowercase [\#67](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/67) ([dylanratcliffe](https://github.com/dylanratcliffe))
+- pdksync - \(FM-7655\) Fix rubygems-update for ruby \< 2.3 [\#56](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/56) ([tphoney](https://github.com/tphoney))
+
 ## [0.4.1](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/0.4.1) (2018-11-05)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/0.4.0...0.4.1)
