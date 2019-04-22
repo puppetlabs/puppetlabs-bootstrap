@@ -72,6 +72,8 @@ The bootstrap task currently installs the agent via the Puppet Enterprise packag
 
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-bootstrap/blob/master/metadata.json)
 
+The bootstrap task is tested to work with Windows Management Framework >= v3.0+ and .NET >= v4.6 on the supported Windows operating systems.
+
 ## Getting Help
 
 To display help for the bootstrap task, run `puppet task show bootstrap::linux` or `puppet task show bootstrap::windows`
