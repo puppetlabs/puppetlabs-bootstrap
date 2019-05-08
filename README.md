@@ -64,7 +64,7 @@ Optionally to install the Puppet agent and adding a setting to puppet.conf and i
 
 ## Reference
 
-To view the available actions and parameters, on the command line, run `puppet task show bootstrap::linux` or `puppet task show bootstrap::windows` or see the bootstrap module page on the [Forge](https://forge.puppet.com/puppetlabs/bootstrap/tasks).
+For detailed reference information, see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-bootstrap/blob/master/REFERENCE.md)
 
 ## Limitations
 
