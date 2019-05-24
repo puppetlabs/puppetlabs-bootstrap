@@ -188,6 +188,9 @@ function Invoke-SimplifiedInstaller
 
 try
 {
+  # Enable TLS 1.2 to allow connection to the master
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
