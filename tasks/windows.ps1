@@ -39,6 +39,15 @@ Param(
   $Extension_Request
 )
 
+function Set-SecurityProtocol {
+  Try {
+    # Note: 3072 is the enum value for tls12 to support .NET 4.0
+    [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]3072
+  } Catch {
+    Throw "Unable to Set Security Protocol to TLS 1.2; this may cause network-dependent calls to fail!`r`nException:`r`n$($_.Exception)"
+  }
+}
+
 function Get-HostName
 {
   $ipAddress = ([System.Net.Dns]::GetHostEntry([System.Environment]::MachineName)).AddressList |
@@ -53,13 +62,10 @@ function Get-HostName
 function Get-CA($Master)
 {
   $verificationCallback = [Net.ServicePointManager]::ServerCertificateValidationCallback
-  $preservedProtocol = [Net.ServicePointManager]::SecurityProtocol
   try
   {
     # temporarily disable SSL verification while downloading CA
     [Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
-    # Note: 3072 is the enum value for tls12 to support .NET 4.0
-    [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]3072
     $caUri = "https://${Master}:8140/puppet-ca/v1/certificate/ca"
     Write-Verbose "Downloading root ca cert from $caUri"
     return (New-Object System.Net.WebClient).DownloadString($caUri)
@@ -68,7 +74,6 @@ function Get-CA($Master)
   {
     # restore original chain validation
     [Net.ServicePointManager]::ServerCertificateValidationCallback = $verificationCallback
-    [Net.ServicePointManager]::SecurityProtocol = $preservedProtocol
   }
 }
 
@@ -172,6 +177,7 @@ function Invoke-SimplifiedInstaller
     $ExtraConfig = @{}
   )
 
+  Set-SecurityProtocol
   Out-CA -Content $CACertContent
   $masterCA = New-CertificateFromContent -Content $CACertContent
   $installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $masterCA
