@@ -4,11 +4,12 @@
 #### Table of Contents
 
 1. [Description](#description)
-2. [Requirements](#requirements)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Reference - An under-the-hood peek at what the task is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Getting help - Some Helpful commands](#getting-help)
+1. [Requirements](#requirements)
+1. [Usage - Configuration options and additional functionality](#usage)
+1. [Reference - An under-the-hood peek at what the task is doing and how](#reference)
+1. [Limitations - OS compatibility, etc.](#limitations)
+1. [Development - Guide for contributing to the module](#development)
+1. [Getting help - Some Helpful commands](#getting-help)
 
 ## Description
 
@@ -73,6 +74,14 @@ The bootstrap task currently installs the agent via the Puppet Enterprise packag
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-bootstrap/blob/master/metadata.json)
 
 The bootstrap task is tested to work with Windows Management Framework >= v3.0+ and .NET >= v4.6 on the supported Windows operating systems.
+
+## Development
+
+We are experimenting with a new tool for running acceptance tests. It's name is [puppet_litmus](https://github.com/puppetlabs/puppet_litmus) this replaces beaker as the test runner. To run the acceptance tests follow the instructions [here](https://github.com/puppetlabs/puppet_litmus/wiki/Tutorial:-use-Litmus-to-execute-acceptance-tests-with-a-sample-module-(MoTD)#install-the-necessary-gems-for-the-module).
+
+Puppet modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. Please follow our guidelines when contributing changes.
+
+For more information, see our [module contribution guide.](https://puppet.com/docs/puppet/latest/contributing.html)
 
 ## Getting Help
 
