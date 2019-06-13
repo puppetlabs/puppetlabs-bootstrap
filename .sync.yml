@@ -7,18 +7,14 @@
   unmanaged: true
 
 .travis.yml:
-  docker_sets:
-    - set: docker/centos-7
-    - set: docker/ubuntu-14.04
-  docker_defaults:
-    bundler_args: ""
-  secure: ""
-  branches:
-    - release
+  unmanaged: true
 
 .yardopts:
   optional:
     - --output-dir docs/
+
+appveyor.yml:
+  unmanaged: true
 
 Gemfile:
   optional:
@@ -36,10 +32,18 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
+      - gem: 'puppet_litmus'
+        platforms:
+          - ruby
+          - mswin
+          - mingw
+          - x64_mingw
+        condition: "ENV['PUPPET_GEM_VERSION'].nil? or ENV['PUPPET_GEM_VERSION'] !~ %r{ 5}"
 
 Rakefile:
   requires:
     - puppet-lint/tasks/puppet-lint
+  use_litmus_tasks: true
 
 spec/spec_helper.rb:
   mock_with: ':rspec'
