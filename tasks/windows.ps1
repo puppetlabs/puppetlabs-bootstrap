@@ -177,7 +177,6 @@ function Invoke-SimplifiedInstaller
     $ExtraConfig = @{}
   )
 
-  Set-SecurityProtocol
   Out-CA -Content $CACertContent
   $masterCA = New-CertificateFromContent -Content $CACertContent
   $installer = Get-InstallerScriptBlock -Master $Master -RootCertificate $masterCA
@@ -213,6 +212,7 @@ try
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
 
+  Set-SecurityProtocol
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
