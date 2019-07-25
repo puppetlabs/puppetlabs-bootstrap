@@ -2,7 +2,27 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [0.5.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/0.5.0) (2019-04-03)
+## [v1.0.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v1.0.0) (2019-07-25)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/0.5.0...v1.0.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#78](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/78) ([david22swan](https://github.com/david22swan))
+
+### Added
+
+- \(FM-8216\) Switch testing to use Litmus [\#94](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/94) ([eimlav](https://github.com/eimlav))
+- \(FM-8150\) Add Windows Server 2019 support [\#92](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/92) ([eimlav](https://github.com/eimlav))
+- \(FM-8038\) Add RedHat 8 support [\#87](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/87) ([eimlav](https://github.com/eimlav))
+- \[FM-7942\] Puppet Strings [\#86](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/86) ([carabasdaniel](https://github.com/carabasdaniel))
+
+### Fixed
+
+- \(FM-8112\) Ensure TLS 1.2 in Windows Task  [\#90](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/90) ([michaeltlombardi](https://github.com/michaeltlombardi))
+- \(FM-7919\) Ensure TLSv1.2 is used when temporarily disabling ssl [\#84](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/84) ([steveax](https://github.com/steveax))
+
+## [0.5.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/0.5.0) (2019-04-04)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/0.4.1...0.5.0)
 
