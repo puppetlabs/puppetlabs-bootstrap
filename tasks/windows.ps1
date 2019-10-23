@@ -66,6 +66,7 @@ function Get-CA($Master)
   {
     # temporarily disable SSL verification while downloading CA
     [Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+    [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $caUri = "https://${Master}:8140/puppet-ca/v1/certificate/ca"
     Write-Verbose "Downloading root ca cert from $caUri"
     return (New-Object System.Net.WebClient).DownloadString($caUri)
@@ -131,6 +132,7 @@ function Get-InstallerScriptBlock($Master, $RootCertificate)
 
     # Allow install.ps1 from an endpoint signed by the Root Certificate Authority
     [Net.ServicePointManager]::ServerCertificateValidationCallback = $customCACallback
+    [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $installerUri = "https://${Master}:8140/packages/current/install.ps1"
     Write-Verbose "Downloading simplified installer $installerUri - allowing root cert [$($RootCertificate.Thumbprint)]"
     $installer = (New-Object System.Net.WebClient).DownloadString($installerUri)
