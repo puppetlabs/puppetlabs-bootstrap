@@ -193,6 +193,8 @@ function Invoke-SimplifiedInstaller
 
 try
 {
+  Set-SecurityProtocol
+
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
@@ -212,7 +214,6 @@ try
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
 
-  Set-SecurityProtocol
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
