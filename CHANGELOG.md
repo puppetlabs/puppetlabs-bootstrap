@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.0.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v2.0.0) (2019-11-11)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/v1.0.0...v2.0.0)
+
+### Changed
+
+- pdksync - FM-8499 - remove ubuntu14 support [\#114](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/114) ([lionce](https://github.com/lionce))
+
+### Fixed
+
+- \(MAINT\) Ensure TLS is enabled first on Windows [\#106](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/106) ([michaeltlombardi](https://github.com/michaeltlombardi))
+
 ## [v1.0.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v1.0.0) (2019-07-25)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/0.5.0...v1.0.0)
