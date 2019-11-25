@@ -83,6 +83,7 @@
     stage: acceptance
   branches:
   - release
+  simplecov: true
 ".yardopts":
   optional:
   - "--output-dir docs/"
