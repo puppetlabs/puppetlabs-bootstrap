@@ -1,15 +1,9 @@
 ---
-.gitignore:
-  required:
-    - ---.project
-
-.gitlab-ci.yml:
-  unmanaged: true
-
-.travis.yml:
+".gitlab-ci.yml":
+  delete: true
+".travis.yml":
   includes:
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=deb_puppet5
     rvm: 2.5.3
@@ -22,8 +16,7 @@
     services: docker
     sudo: required
     stage: acceptance
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=deb_puppet6
     rvm: 2.5.3
@@ -36,8 +29,7 @@
     services: docker
     sudo: required
     stage: acceptance
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=el6_puppet5
     rvm: 2.5.3
@@ -50,8 +42,7 @@
     services: docker
     sudo: required
     stage: acceptance
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=el6_puppet6
     rvm: 2.5.3
@@ -64,8 +55,7 @@
     services: docker
     sudo: required
     stage: acceptance
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=el7_puppet5
     rvm: 2.5.3
@@ -78,8 +68,7 @@
     services: docker
     sudo: required
     stage: acceptance
-  -
-    bundler_args:
+  - bundler_args: 
     dist: trusty
     env: PLATFORMS=el7_puppet6
     rvm: 2.5.3
@@ -92,40 +81,34 @@
     services: docker
     sudo: required
     stage: acceptance
-
   branches:
-    - release
-
-.yardopts:
+  - release
+  simplecov: true
+".yardopts":
   optional:
-    - --output-dir docs/
-
+  - "--output-dir docs/"
 appveyor.yml:
   use_litmus: true
   matrix_extras:
-    -
-      RUBY_VERSION: 25-x64
-      ACCEPTANCE: 'yes'
-      TARGET_HOST: localhost
-    -
-      RUBY_VERSION: 25-x64
-      ACCEPTANCE: 'yes'
-      TARGET_HOST: localhost
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  simplecov: true
 Gemfile:
   use_litmus: true
   optional:
-    ':development':
-      - gem: 'github_changelog_generator'
-        git: 'https://github.com/skywinder/github-changelog-generator'
-        ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')"
-
+    ":development":
+    - gem: github_changelog_generator
+      git: https://github.com/skywinder/github-changelog-generator
+      ref: 20ee04ba1234e9e83eb2ffb5056e23d641c7a018
+      condition: Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
 Rakefile:
   requires:
-    - puppet-lint/tasks/puppet-lint
-
+  - puppet-lint/tasks/puppet-lint
 spec/spec_helper.rb:
-  mock_with: ':rspec'
+  mock_with: ":rspec"
   coverage_report: true
