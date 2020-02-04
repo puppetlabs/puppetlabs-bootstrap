@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.1.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v2.1.0) (2020-01-21)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/v2.0.0...v2.1.0)
+
+### Added
+
+- \(FM-8581\) - Debian 10 added to travis and provision file refactored [\#124](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/124) ([david22swan](https://github.com/david22swan))
+- pdksync - "MODULES-10242 Add ubuntu14 support back to the modules" [\#119](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/119) ([sheenaajay](https://github.com/sheenaajay))
+- \(FM-8686\) - Addition of Support for CentOS 8 [\#117](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/117) ([david22swan](https://github.com/david22swan))
+
 ## [v2.0.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v2.0.0) (2019-11-11)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/v1.0.0...v2.0.0)
