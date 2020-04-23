@@ -29,6 +29,10 @@ Param(
   $Environment,
 
   [Parameter(Mandatory = $False)]
+  [String]
+  $Set_Noop,
+
+  [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
   $Custom_Attribute,
@@ -212,6 +216,9 @@ try
   }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
+  }
+  if ($PSBoundParameters.ContainsKey('Set_Noop')) {
+    $options.ExtraConfig += @{ 'agent:noop' = "'$Set_Noop'" }
   }
 
   $installerOutput = Invoke-SimplifiedInstaller @options
