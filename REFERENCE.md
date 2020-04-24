@@ -43,6 +43,12 @@ Data type: `Optional[String]`
 
 The environment in which the node should be bootstrapped
 
+##### `set_noop`
+
+Data type: `Optional[Boolean]`
+
+The noop setting in the [agent] section of puppet.conf
+
 ##### `dns_alt_names`
 
 Data type: `Optional[String]`

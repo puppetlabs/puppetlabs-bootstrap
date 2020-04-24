@@ -18,6 +18,10 @@
       "description": "The environment in which the node should be bootstrapped",
       "type": "Optional[String]"
     },
+    "set_noop": {
+      "description": "The noop setting in the [agent] section of puppet.conf",
+      "type": "Optional[Boolean]"
+    },
     "dns_alt_names": {
       "description": "The DNS alt names with which the agent certificate should be generated",
       "type": "Optional[String]"

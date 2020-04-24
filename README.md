@@ -47,6 +47,11 @@ Optionally to install the Puppet agent with a certname other than the fqdn of th
 Optionally to install the puppet-agent with a specific environment other than the default environment `production`, specify the custom environment:
 `bolt task run bootstrap::linux master=<master's fqdn> environment=<custom environment> --nodes x,y,z --modulepath /path/to/modules`
 
+#### Example: Specify noop
+
+Optionally to install the puppet-agent with noop:
+`bolt task run bootstrap::linux master=<master's fqdn> set_noop=true--nodes x,y,z --modulepath /path/to/modules`
+
 #### Example: Specify custom dns alt names
 
 Optionally to install the Puppet agent with custom dns alt names, specify the custom dns alt names:
