@@ -45,7 +45,7 @@ if [ -n "${environment?}" ] ; then
   environment_arg="agent:environment='${environment}' "
 fi
 if [ -n "${set_noop?}" ] ; then
-  set_noop_arg="agent:noop='${set_noop}' "
+  set_noop_arg="agent:noop=${set_noop} "
 fi
 if [ -n "${alt_names?}" ] ; then
   alt_names_arg="agent:dns_alt_names='${alt_names}' "
