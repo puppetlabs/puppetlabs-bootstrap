@@ -218,7 +218,7 @@ try
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
-    $options.ExtraConfig += @{ 'agent:noop' = "'$Set_Noop'" }
+    $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop" }
   }
 
   $installerOutput = Invoke-SimplifiedInstaller @options
