@@ -52,3 +52,5 @@ Rakefile:
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true
+.github/workflows/auto_release.yml:
+  unmanaged: false
