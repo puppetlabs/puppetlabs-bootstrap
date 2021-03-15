@@ -1,43 +1,9 @@
 ---
 ".gitlab-ci.yml":
   delete: true
-".travis.yml":
-  global_env: 
-    - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
-  deploy_to_forge:
-    enabled: false
-  branches:
-  - release
-  use_litmus: true
-  litmus:
-    provision_list:
-      - travis_deb
-      - travis_ub
-      - travis_el7
-      - travis_el8
-      - ---travis_el
-  simplecov: true
-  notifications:
-    slack:
-      secure: >-
-        mArhZST03ryygJmu2qwmgyUYwTYTSOdHxgAsvkgeiHFOD5ffYkJPxQq0z46npYpqtbV68Kkd7rHpI6m9n2U1H3hCZB6Fun7k7wEyTvSg9XYymO1boeyd5STvguJ9anMrLTA/vLYuB4S8J+22oYzvmOyeeWsyYDJiBjPJb+k/IxZyqmYQA1mYtrlawewQMTZx2D5i3B7pTYcoVqfAQaIXoYFTiIwgdjdl8dANFEFj1zMFT2PVOiobhE8serTFYyL4V6vMLJsLWtsxssHyzH9quEaS9kDXl6ixxef+WtB87x9ucCMDB18EkC/M2Ppb9Vs4cZYesE687WZYrCkFdrLkk3+Z51b/cwrIuJlk81i5FzomNJJvglLzWDkl0Z2YCNggwmg/FQWZjjRR7nbZVyyp4b9oUigYbWRZL4YDNivEQ8j7gKLaoYZ8O20tPcO3DjFhVV6Ide+ANMg67yXS82Cr4Th5D/ViFmDUuEhjFlkIGjpeBIvHjzNcwH/1F9q7n9/V0IApt0hvO22NcBpV0VdvFqAqyvbQgpL4lRo6b9Y91aOmYE5xTtLj1DRx4Munss/K5Y/Bz8LNqGpJ/CYNCWr/OmtT5wI7S5qJgJDGG12d7zRUS06hI8P/10aB/4JvJs0FyMyqRqlIYsHvqXHWmj+JZ+k4va0AeEggKa754+FJR0c=
-".yardopts":
-  optional:
-  - "--output-dir docs/"
 appveyor.yml:
-  environment:
-    HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
-    HONEYCOMB_DATASET: litmus tests
-  use_litmus: true
-  matrix_extras:
-  - RUBY_VERSION: 25-x64
-    ACCEPTANCE: 'yes'
-    TARGET_HOST: localhost
-  - RUBY_VERSION: 25-x64
-    ACCEPTANCE: 'yes'
-    TARGET_HOST: localhost
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  simplecov: true
+  delete: true
+
 Gemfile:
   use_litmus: true
   optional:
@@ -52,3 +18,10 @@ Rakefile:
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true
+.github/workflows/spec.yml:
+  checks: 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+  unmanaged: false
+.github/workflows/release.yml:
+  unmanaged: false
+.travis.yml:
+  delete: true
