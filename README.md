@@ -62,11 +62,11 @@ You can also run tasks in the PE console. See PE task documentation for complete
 
 #### Example: Specify a custom_attribute
 
-Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the custom_attributes section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> custom_attribute=key=value --nodes x,y,z --modulepath /path/to/modules`
+Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the custom_attributes section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> custom_attribute='["<key>=<value>"]' --nodes x,y,z --modulepath /path/to/modules`
 
 #### Example: Specify a extension_request
 
-Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the extension_requests section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> extension_request=key=value --nodes x,y,z --modulepath /path/to/modules`
+Optionally to install the Puppet agent and adding a setting to puppet.conf and including it in the extension_requests section of csr_attributes.yaml: `bolt task run bootstrap master=<master's fqdn> extension_request=key='["<extension>=<value>"]' --nodes x,y,z --modulepath /path/to/modules`
 
 ## Reference
 
