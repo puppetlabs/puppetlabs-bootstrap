@@ -15,6 +15,10 @@
 
 This module provides the bootstrap task. This allows you to install Puppet agents on un-puppeted hosts via the ssh or winrm transports.
 
+> This module is not supported or maintained by Puppet and does not qualify for Puppet Support plans. It's provided without guarantee or warranty and you can use it at your own risk. All bugfixes, updates, and new feature development will come from community contributions.
+>
+> [tier:community]
+
 ## Requirements
 
 This module requires both the `bolt` gem on the machine from which you are running bolt commands (the controller node), and a Puppet Enterprise 2017.3 or later master hosting agent repositories.
@@ -85,11 +89,6 @@ The bootstrap task is tested to work with Windows Management Framework >= v3.0+ 
 Acceptance tests for this module leverage [puppet_litmus](https://github.com/puppetlabs/puppet_litmus).
 To run the acceptance tests follow the instructions [here](https://github.com/puppetlabs/puppet_litmus/wiki/Tutorial:-use-Litmus-to-execute-acceptance-tests-with-a-sample-module-(MoTD)#install-the-necessary-gems-for-the-module).
 You can also find a tutorial and walkthrough of using Litmus and the PDK on [YouTube](https://www.youtube.com/watch?v=FYfR7ZEGHoE).
-
-If you run into an issue with this module, or if you would like to request a feature, please [file a ticket](https://tickets.puppetlabs.com/browse/MODULES/).
-Every Monday the Puppet IA Content Team has [office hours](https://puppet.com/community/office-hours) in the [Puppet Community Slack](http://slack.puppet.com/), alternating between an EMEA friendly time (1300 UTC) and an Americas friendly time (0900 Pacific, 1700 UTC).
-
-If you have problems getting this module up and running, please [contact Support](http://puppetlabs.com/services/customer-support).
 
 If you submit a change to this module, be sure to regenerate the reference documentation as follows:
 
