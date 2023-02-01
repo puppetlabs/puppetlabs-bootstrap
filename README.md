@@ -78,7 +78,7 @@ For detailed reference information, see the [REFERENCE.md](https://github.com/pu
 
 ## Limitations
 
-The bootstrap task currently installs the agent via the Puppet Enterprise package management tools, and FOSS repository support will be added later. See the [Puppet Enterprise](https://docs.puppet.com/pe/latest/install_agents.html) documentation for more information.
+The bootstrap task currently installs the agent via the Puppet Enterprise package management tools, and FOSS repository support will be added later. See the [Puppet Enterprise](https://puppet.com/docs/pe/latest/installing_agents.html) documentation for more information.
 
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-bootstrap/blob/master/metadata.json)
 
