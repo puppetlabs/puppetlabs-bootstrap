@@ -175,6 +175,18 @@ function New-OptionsHash($Prefix, $Values)
   $hash
 }
 
+function New-OptionsStringHash($Values)
+{
+  $hash = @{}
+  Foreach ($i in $Values)
+  {
+    echo $i
+    $k, $v = $i -split '=',2
+    $hash."$k" = $v
+  }
+  $hash
+}
+
 function New-OptionsString($Values)
 {
   $String = ""
@@ -207,32 +219,32 @@ function Invoke-SimplifiedInstaller
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
   }
 
-  echo "$installer @installerArgs $Puppet_Conf"
+  # echo "$installer @installerArgs $Puppet_Conf"
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
   echo $installer
-  & $installer @installerArgs $Puppet_Conf 2>&1
+  & $installer @installerArgs 2>&1
 }
 
 try
 {
   Set-SecurityProtocol
 
-  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
-    $Puppet_Conf = (New-OptionsString $Puppet_Conf_Settings)
-    echo "puppet conf settings are"
-    echo $Puppet_Conf_Settings
-    echo $Puppet_Conf_Settings > c:\pupsetting.txt
-  } else {
-    $Puppet_Conf = ""
-  }
+  # if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+  #   $Puppet_Conf = (New-OptionsString $Puppet_Conf_Settings)
+  #   echo "puppet conf settings are"
+  #   echo $Puppet_Conf_Settings
+  #   echo $Puppet_Conf_Settings > c:\pupsetting.txt
+  # } else {
+  #   $Puppet_Conf = ""
+  # }
 
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
     ExtraConfig = @{}
-    Puppet_Conf = $Puppet_Conf
+    # Puppet_Conf = $Puppet_Conf
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
     $options.ExtraConfig += @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
@@ -242,6 +254,9 @@ try
   }
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
+  }
+    if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+    $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
