@@ -260,10 +260,11 @@ try
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
   # $test = New-OptionsStringHash $Puppet_Conf_Settings
-  # echo $test
+  echo "Before adding hash"
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
     $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
+  echo "after adding"
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
