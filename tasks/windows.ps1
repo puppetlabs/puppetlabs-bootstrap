@@ -175,6 +175,18 @@ function New-OptionsHash($Prefix, $Values)
   $hash
 }
 
+function New-OptionsString($Values)
+{
+  $hash = @{}
+  $String = ""
+  Foreach ($i in $Values)
+  {
+    $String = "${String} $i"
+  }
+  $hash."${String}"
+  $hash
+}
+
 function Invoke-SimplifiedInstaller
 {
   [CmdletBinding()]
@@ -224,7 +236,7 @@ try
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
-    $options.ExtraConfig += ($Puppet_Conf_Settings)
+    $options.ExtraConfig += (New-OptionsString $Puppet_Conf_Settings)
   }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
@@ -232,7 +244,6 @@ try
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-  echo 
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
