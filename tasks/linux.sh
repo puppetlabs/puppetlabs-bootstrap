@@ -34,12 +34,12 @@ convert_array_string_puppet_conf() {
 
   eval array=($array_string)
 
-  result=$1
   for item in "${array[@]}"
   do
-    result="${result} $item \\"
+    result="$item \\"
   done
-  echo $result
+  final_result="${1} ${result}"
+  echo $final_result
 }
 
 
