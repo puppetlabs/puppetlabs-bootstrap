@@ -53,6 +53,9 @@ custom_attribute="$PT_custom_attribute"
 extension_request="$PT_extension_request"
 puppet_conf="$PT_puppet_conf_settings"
 
+echo "puppet_conf"
+echo $puppet_conf
+
 validate $certname
 validate $environment
 validate $set_noop
