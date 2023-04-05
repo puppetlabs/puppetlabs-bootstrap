@@ -43,7 +43,7 @@ Param(
   $Extension_Request,
 
   [Parameter(Mandatory = $False)]
-  [ValidateScript({ $_ -match '\\w+:\\w+=\\w+' })]
+  [ValidateScript({ $_ -match '\w+:\w+=\w+' })]
   [String[]]
   $Puppet_Conf_Settings
 )
