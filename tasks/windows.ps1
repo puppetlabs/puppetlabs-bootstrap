@@ -195,7 +195,8 @@ function Invoke-SimplifiedInstaller
     $Master,
     $CertName,
     $CACertContent,
-    $ExtraConfig = @{}
+    $ExtraConfig = @{},
+    $Puppet_Conf
   )
 
   Out-CA -Content $CACertContent
@@ -206,6 +207,7 @@ function Invoke-SimplifiedInstaller
   $ExtraConfig.Add('agent:certname', $CertName)
   $installerArgs = @{
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
+    Arguments = "${Arguments} $Puppet_Conf"
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
@@ -230,7 +232,7 @@ try
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
     ExtraConfig = @{}
-    Puppet_conf = $Puppet_Conf
+    Puppet_Conf = $Puppet_Conf
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
     $options.ExtraConfig += @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
