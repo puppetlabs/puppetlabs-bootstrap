@@ -39,8 +39,7 @@ convert_array_string_puppet_conf() {
   do
     result="${result} $item "
   done
-  final_result="${1} ${result}"
-  echo $final_result
+  echo $result
 }
 
 
