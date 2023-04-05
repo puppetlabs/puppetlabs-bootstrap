@@ -41,6 +41,11 @@ Param(
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
   $Extension_Request
+
+  [Parameter(Mandatory = $False)]
+  [ValidateScript({ $_ -match '\\w+:\\w+=\\w+' })]
+  [String[]]
+  $Puppet_Conf_Settings
 )
 
 function Set-SecurityProtocol {
@@ -199,6 +204,10 @@ try
 {
   Set-SecurityProtocol
 
+  echo "puppet conf settings are"
+  echo $Puppet_Conf_Settings
+  echo $Puppet_Conf_Settings > c:\pupsetting.txt
+
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
@@ -214,13 +223,16 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
+  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+    $options.ExtraConfig += ($Puppet_Conf_Settings)
+  }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-
+  echo 
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
