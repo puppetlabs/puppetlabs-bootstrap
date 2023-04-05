@@ -40,7 +40,12 @@ Param(
   [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
-  $Extension_Request
+  $Extension_Request,
+
+  [Parameter(Mandatory = $False)]
+  [ValidateScript({ $_ -match '\w+:\w+=\w+' })]
+  [String[]]
+  $Puppet_Conf_Settings
 )
 
 function Set-SecurityProtocol {
@@ -170,6 +175,13 @@ function New-OptionsHash($Prefix, $Values)
   $hash
 }
 
+function New-OptionsStringHash($Values)
+{
+  $hash = @{}
+  $Values | % { $k, $v = $_ -split '=',2; $hash."$k" = $v }
+  $hash
+}
+
 function Invoke-SimplifiedInstaller
 {
   [CmdletBinding()]
@@ -214,13 +226,17 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
+  $louie = New-OptionsHash 'extension_requests' $Extension_Request
+  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+    $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
+  }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-
+  
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
