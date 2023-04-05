@@ -209,7 +209,7 @@ function Invoke-SimplifiedInstaller
     $Master,
     $CertName,
     $CACertContent,
-    $ExtraConfig = @{},
+    $ExtraConfig = @{}
     # $Puppet_Conf
   )
 
