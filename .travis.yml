@@ -16,7 +16,7 @@ script:
   - 'SIMPLECOV=yes bundle exec rake $CHECK'
 bundler_args: --without system_tests
 rvm:
-  - 2.7
+  - 2.5.7
 env:
   global:
     - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
@@ -34,7 +34,7 @@ jobs:
       - "bundle exec rake litmus:install_module"
       bundler_args:
       env: PLATFORMS=travis_deb_puppet7
-      rvm: 2.7
+      rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
@@ -45,7 +45,7 @@ jobs:
       - "bundle exec rake litmus:install_module"
       bundler_args:
       env: PLATFORMS=travis_ub_puppet7
-      rvm: 2.7
+      rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
@@ -56,7 +56,7 @@ jobs:
       - "bundle exec rake litmus:install_module"
       bundler_args:
       env: PLATFORMS=travis_el7_puppet7
-      rvm: 2.7
+      rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
@@ -67,7 +67,7 @@ jobs:
       - "bundle exec rake litmus:install_module"
       bundler_args:
       env: PLATFORMS=travis_el8_puppet7
-      rvm: 2.7
+      rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
