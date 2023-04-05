@@ -184,7 +184,7 @@ function New-OptionsStringHash($Values)
     $k, $v = $i -split '=',2
     echo $k
     echo $v
-    # $hash.["$k"] = $v
+    $hash.Add($k, $v)
   }
   echo "hash is"
   echo $hash
