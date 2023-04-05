@@ -178,16 +178,17 @@ function New-OptionsHash($Prefix, $Values)
 function New-OptionsStringHash($Values)
 {
   $hash = @{}
-  Foreach ($i in $Values)
-  {
-    echo $i
-    $k, $v = $i -split '=',2
-    echo $k
-    echo $v
-    $hash.Add($k, $v)
-  }
-  echo "hash is"
-  echo $hash
+  $Values | % { $k, $v = $_ -split '=',2; $hash."$k" = $v }
+  # Foreach ($i in $Values)
+  # {
+  #   echo $i
+  #   $k, $v = $i -split '=',2
+  #   echo $k
+  #   echo $v
+  #   $hash.Add($k, $v)
+  # }
+  # echo "hash is"
+  # echo $hash
   $hash
 }
 
