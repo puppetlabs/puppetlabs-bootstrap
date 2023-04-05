@@ -182,8 +182,10 @@ function New-OptionsStringHash($Values)
   {
     echo $i
     $k, $v = $i -split '=',2
-    $hash."$k" = $v
+    $hash.["$k"] = $v
   }
+  echo "hash is"
+  echo $hash
   $hash
 }
 
@@ -206,7 +208,7 @@ function Invoke-SimplifiedInstaller
     $CertName,
     $CACertContent,
     $ExtraConfig = @{},
-    $Puppet_Conf
+    # $Puppet_Conf
   )
 
   Out-CA -Content $CACertContent
