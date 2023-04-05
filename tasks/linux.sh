@@ -81,7 +81,7 @@ if [ -n "${extension_request?}" ] ; then
   extension_requests_arg="$(convert_array_string extension_requests "${extension_request}") "
 fi
 if [ -n "${puppet_conf?}" ] ; then
-  puppet_conf_arg="$(convert_array_string -s "${puppet_conf}") "
+  puppet_conf_arg="$(convert_array_string_puppet_conf -s "${puppet_conf}") "
 fi
 
 set -e
