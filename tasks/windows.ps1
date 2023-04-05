@@ -204,7 +204,6 @@ function Invoke-SimplifiedInstaller
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
-  echo $installer
   & $installer @installerArgs 2>&1
 }
 
@@ -231,15 +230,12 @@ try
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
     $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
-  echo "after adding"
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-  echo "options are"
-  echo $options
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
