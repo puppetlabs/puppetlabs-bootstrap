@@ -216,15 +216,21 @@ try
 {
   Set-SecurityProtocol
 
-  echo "puppet conf settings are"
-  echo $Puppet_Conf_Settings
-  echo $Puppet_Conf_Settings > c:\pupsetting.txt
+  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+    $Puppet_Conf = (New-OptionsString $Puppet_Conf_Settings)
+    echo "puppet conf settings are"
+    echo $Puppet_Conf_Settings
+    echo $Puppet_Conf_Settings > c:\pupsetting.txt
+  } else {
+    $Puppet_Conf = ""
+  }
 
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
     ExtraConfig = @{}
+    Puppet_conf = $Puppet_Conf
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
     $options.ExtraConfig += @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
@@ -235,15 +241,14 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
-  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
-    $options.ExtraConfig += (New-OptionsString $Puppet_Conf_Settings)
-  }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
+  echo "options are"
+  echo $options
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
