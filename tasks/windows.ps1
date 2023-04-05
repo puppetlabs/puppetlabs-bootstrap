@@ -177,14 +177,12 @@ function New-OptionsHash($Prefix, $Values)
 
 function New-OptionsString($Values)
 {
-  $hash = @{}
   $String = ""
   Foreach ($i in $Values)
   {
     $String = "${String} $i"
   }
-  $hash."${String}"
-  $hash
+  $String
 }
 
 function Invoke-SimplifiedInstaller
