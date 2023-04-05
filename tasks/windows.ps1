@@ -180,7 +180,7 @@ function New-OptionsString($Values)
   $String = ""
   Foreach ($i in $Values)
   {
-    $String = "${String} $i"
+    $String = "${String}$i "
   }
   $String
 }
