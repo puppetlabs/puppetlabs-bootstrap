@@ -207,11 +207,10 @@ function Invoke-SimplifiedInstaller
   $ExtraConfig.Add('agent:certname', $CertName)
   $installerArgs = @{
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
-    Arguments = "${Arguments} $Puppet_Conf"
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
-  & $installer @installerArgs 2>&1
+  & $installer @installerArgs $Puppet_Conf 2>&1
 }
 
 try
