@@ -40,7 +40,7 @@ Param(
   [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
-  $Extension_Request
+  $Extension_Request,
 
   [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\\w+:\\w+=\\w+' })]
