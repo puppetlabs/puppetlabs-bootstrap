@@ -261,10 +261,10 @@ try
   }
   $louie = New-OptionsHash 'extension_requests' $Extension_Request
   echo "Louie type"
-  echo $louie.GetType
+  echo $louie.GetType()
   $test = New-OptionsStringHash $Puppet_Conf_Settings
   echo "Before adding hash"
-  echo $test.GetType
+  echo $test.GetType()
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
     $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
