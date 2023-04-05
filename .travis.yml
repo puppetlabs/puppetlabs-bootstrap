@@ -74,10 +74,10 @@ jobs:
     -
       before_script:
       - "bundle exec rake 'litmus:provision_list[travis_deb]'"
-      - "bundle exec rake 'litmus:install_agent[puppet6]'"
+      - "bundle exec rake 'litmus:install_agent[puppet7]'"
       - "bundle exec rake litmus:install_module"
       bundler_args:
-      env: PLATFORMS=travis_deb_puppet6
+      env: PLATFORMS=travis_deb_puppet7
       rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
@@ -85,10 +85,10 @@ jobs:
     -
       before_script:
       - "bundle exec rake 'litmus:provision_list[travis_ub]'"
-      - "bundle exec rake 'litmus:install_agent[puppet6]'"
+      - "bundle exec rake 'litmus:install_agent[puppet7]'"
       - "bundle exec rake litmus:install_module"
       bundler_args:
-      env: PLATFORMS=travis_ub_puppet6
+      env: PLATFORMS=travis_ub_puppet7
       rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
@@ -96,10 +96,10 @@ jobs:
     -
       before_script:
       - "bundle exec rake 'litmus:provision_list[travis_el7]'"
-      - "bundle exec rake 'litmus:install_agent[puppet6]'"
+      - "bundle exec rake 'litmus:install_agent[puppet7]'"
       - "bundle exec rake litmus:install_module"
       bundler_args:
-      env: PLATFORMS=travis_el7_puppet6
+      env: PLATFORMS=travis_el7_puppet7
       rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
@@ -107,10 +107,10 @@ jobs:
     -
       before_script:
       - "bundle exec rake 'litmus:provision_list[travis_el8]'"
-      - "bundle exec rake 'litmus:install_agent[puppet6]'"
+      - "bundle exec rake 'litmus:install_agent[puppet7]'"
       - "bundle exec rake litmus:install_module"
       bundler_args:
-      env: PLATFORMS=travis_el8_puppet6
+      env: PLATFORMS=travis_el8_puppet7
       rvm: 2.5.7
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
