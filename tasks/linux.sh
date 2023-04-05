@@ -27,10 +27,11 @@ convert_array_string() {
 convert_array_string_puppet_conf() {
   array_string=$2
   array_string=${array_string// /}
-  array_string=${array_string//,/ }
+  array_string=${array_string//\",\"/ }
 
   array_string=${array_string##[}
   array_string=${array_string%]}
+  array_string=${array_string//\"/ }
 
   eval array=($array_string)
 
