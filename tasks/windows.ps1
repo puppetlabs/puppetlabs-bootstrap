@@ -182,7 +182,9 @@ function New-OptionsStringHash($Values)
   {
     echo $i
     $k, $v = $i -split '=',2
-    $hash.["$k"] = $v
+    echo $k
+    echo $v
+    # $hash.["$k"] = $v
   }
   echo "hash is"
   echo $hash
