@@ -259,9 +259,11 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
-    if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
-    $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
-  }
+  $test = New-OptionsStringHash $Puppet_Conf_Settings
+  echo $test
+  # if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+  #   $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
+  # }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
