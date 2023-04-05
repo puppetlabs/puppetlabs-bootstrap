@@ -37,7 +37,7 @@ convert_array_string_puppet_conf() {
 
   for item in "${array[@]}"
   do
-    result="$item \\"
+    result="${result} $item "
   done
   final_result="${1} ${result}"
   echo $final_result
