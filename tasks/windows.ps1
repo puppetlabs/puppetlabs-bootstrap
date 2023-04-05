@@ -207,6 +207,8 @@ function Invoke-SimplifiedInstaller
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
   }
 
+  echo $installer @installerArgs $Puppet_Conf
+
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
   & $installer @installerArgs $Puppet_Conf 2>&1
 }
