@@ -179,27 +179,7 @@ function New-OptionsStringHash($Values)
 {
   $hash = @{}
   $Values | % { $k, $v = $_ -split '=',2; $hash."$k" = $v }
-  # Foreach ($i in $Values)
-  # {
-  #   echo $i
-  #   $k, $v = $i -split '=',2
-  #   echo $k
-  #   echo $v
-  #   $hash.Add($k, $v)
-  # }
-  # echo "hash is"
-  # echo $hash
   $hash
-}
-
-function New-OptionsString($Values)
-{
-  $String = ""
-  Foreach ($i in $Values)
-  {
-    $String = "${String}$i "
-  }
-  $String
 }
 
 function Invoke-SimplifiedInstaller
@@ -211,7 +191,6 @@ function Invoke-SimplifiedInstaller
     $CertName,
     $CACertContent,
     $ExtraConfig = @{}
-    # $Puppet_Conf
   )
 
   Out-CA -Content $CACertContent
@@ -224,8 +203,6 @@ function Invoke-SimplifiedInstaller
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
   }
 
-  # echo "$installer @installerArgs $Puppet_Conf"
-
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
   echo $installer
   & $installer @installerArgs 2>&1
@@ -235,21 +212,11 @@ try
 {
   Set-SecurityProtocol
 
-  # if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
-  #   $Puppet_Conf = (New-OptionsString $Puppet_Conf_Settings)
-  #   echo "puppet conf settings are"
-  #   echo $Puppet_Conf_Settings
-  #   echo $Puppet_Conf_Settings > c:\pupsetting.txt
-  # } else {
-  #   $Puppet_Conf = ""
-  # }
-
   $options = @{
     Master = $Master
     CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
     CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
     ExtraConfig = @{}
-    # Puppet_Conf = $Puppet_Conf
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
     $options.ExtraConfig += @{ 'agent:dns_alt_names' = "'$DNS_Alt_Names'" }
@@ -261,11 +228,6 @@ try
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
   $louie = New-OptionsHash 'extension_requests' $Extension_Request
-  echo "Louie type"
-  echo $louie.GetType()
-  $test = New-OptionsStringHash $Puppet_Conf_Settings
-  echo "Before adding hash"
-  echo $test.GetType()
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
     $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
