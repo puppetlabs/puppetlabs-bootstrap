@@ -207,14 +207,14 @@ function Invoke-SimplifiedInstaller
     Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
   }
 
-  echo $installer @installerArgs $Puppet_Conf
+  echo "$installer @installerArgs $Puppet_Conf"
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
   & $installer @installerArgs $Puppet_Conf 2>&1
 }
 
-try
-{
+# try
+# {
   Set-SecurityProtocol
 
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
@@ -259,30 +259,30 @@ try
 
   # TODO: could use ConvertTo-Json, but that requires PS3
   # if embedding in literal, should make sure Name / Status doesn't need escaping
-  Write-Host @"
-{
-  "host"     : "$jsonHostName",
-  "certname" : "$jsonCertName",
-  "master"   : "$Master",
-  "config"   : "$jsonSafeConfig",
-  "output"   : "$jsonOutput",
-  "status"   : "success"
-}
-"@
-}
-catch
-{
-  Write-Host @"
-  {
-    "status"   : "failure",
-    "host"     : "$jsonHostName",
-    "certname" : "$jsonCertName",
-    "master"   : "$Master",
-    "_error"   : {
-      "msg" : "Unable to install agent on $jsonHostName with certname ${jsonCertName}: $(ConvertTo-JsonString $_.Exception.Message)",
-      "kind": "powershell_error",
-      "details" : {}
-    }
-  }
-"@
-}
+#   Write-Host @"
+# {
+#   "host"     : "$jsonHostName",
+#   "certname" : "$jsonCertName",
+#   "master"   : "$Master",
+#   "config"   : "$jsonSafeConfig",
+#   "output"   : "$jsonOutput",
+#   "status"   : "success"
+# }
+# "@
+# }
+# catch
+# {
+#   Write-Host @"
+#   {
+#     "status"   : "failure",
+#     "host"     : "$jsonHostName",
+#     "certname" : "$jsonCertName",
+#     "master"   : "$Master",
+#     "_error"   : {
+#       "msg" : "Unable to install agent on $jsonHostName with certname ${jsonCertName}: $(ConvertTo-JsonString $_.Exception.Message)",
+#       "kind": "powershell_error",
+#       "details" : {}
+#     }
+#   }
+# "@
+# }
