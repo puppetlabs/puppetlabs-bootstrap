@@ -53,9 +53,6 @@ custom_attribute="$PT_custom_attribute"
 extension_request="$PT_extension_request"
 puppet_conf="$PT_puppet_conf_settings"
 
-echo "puppet_conf"
-echo $puppet_conf
-
 validate $certname
 validate $environment
 validate $set_noop
@@ -92,11 +89,6 @@ if [ -n "${cacert_content?}" ]; then
 else
   curl_arg="-k"
 fi
-
-echo "bash /tmp/install.bash ${certname_arg}${environment_arg}${set_noop_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}${puppet_conf_arg}" > /tmp/command
-echo "puppet conf args are"
-echo $puppet_conf_arg
-
 
 if curl ${curl_arg?} https://${master}:8140/packages/current/install.bash -o /tmp/install.bash; then
   if bash /tmp/install.bash ${certname_arg}${environment_arg}${set_noop_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}${puppet_conf_arg}; then
