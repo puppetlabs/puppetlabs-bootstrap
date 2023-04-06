@@ -226,7 +226,6 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
-  $louie = New-OptionsHash 'extension_requests' $Extension_Request
   if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
     $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
   }
