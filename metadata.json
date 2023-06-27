@@ -73,7 +73,7 @@
     "agent",
     "install"
   ],
-  "pdk-version": "1.18.1",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "remotes/origin/master-0-ga58fd92"
+  "pdk-version": "2.7.1",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
+  "template-ref": "heads/main-0-g056e50d"
 }
