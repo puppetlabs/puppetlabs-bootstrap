@@ -34,7 +34,7 @@ To run the bootstrap task, use the bolt command, specifying the PE master from w
 On the command line:
 * For Linux,   run `bolt task run bootstrap::linux   master=<master's fqdn> --nodes x,y,z --modulepath /path/to/modules`
 * For Windows, run `bolt task run bootstrap::windows master=<master's fqdn> --nodes x,y,z --modulepath /path/to/modules`
-For all advanced examples below, simply replace `bootstrap::linux` by `bootstrap::windows` to perform the action on Windows.
+For all advanced examples below, simply replace `bootstrap::linux` by `bootstrap::windows` to perform the action on Windows
 
 #### Example: Verify the master's CA on initial connection
 
