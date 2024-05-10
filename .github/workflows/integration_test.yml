@@ -54,7 +54,7 @@ jobs:
 
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
-      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?.
 
     steps:
 
