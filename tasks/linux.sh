@@ -7,6 +7,13 @@ validate() {
   fi
 }
 
+verify_prereqs() {
+  if ! which tar > /dev/null 2>&1 ; then
+    echo "tar not found, tar is required for Puppet installation"
+    exit 1
+  fi
+}
+
 convert_array_string() {
   array_string=$2
   array_string=${array_string// /}
@@ -57,6 +64,7 @@ validate $certname
 validate $environment
 validate $set_noop
 validate $alt_names
+verify_prereqs
 
 if [ -n "${certname?}" ] ; then
   certname_arg="agent:certname='${certname}' "
