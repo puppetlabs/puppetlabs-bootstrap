@@ -89,4 +89,4 @@ jobs:
       
       - name: run bootstrap task
         run: |
-          bundle exec bolt task run bootstrap --targets localhost master=losthost cername=testing123.com
+          bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost master=losthost cername=testing123.com
