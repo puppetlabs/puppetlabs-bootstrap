@@ -7,7 +7,7 @@ on:
 
 jobs:
   setup_vm:
-    name: Run npm on Ubuntu
+    name: Setup Vm with mock webserver for installs script
     runs-on: ubuntu-22.04
     outputs:
       matrix: ${{ steps.get-matrix.outputs.matrix }}
@@ -47,3 +47,42 @@ jobs:
         run: | 
           pwd
           curl https://localhost:8140/packages/current/install.bash -k
+
+  Integration:
+    needs:
+      - setup_vm
+    runs-on: ubuntu-22.04
+    if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+
+    env:
+      PUPPET_GEM_VERSION: '~> 7.24'
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: Create the fixtures directory
+        run: |
+          bundle exec rake spec_prep
+
+      - name: check if bolt avaliable
+        run: | 
+          bundle exec bolt task show
+          bundle list
