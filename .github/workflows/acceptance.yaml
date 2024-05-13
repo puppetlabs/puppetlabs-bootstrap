@@ -32,3 +32,13 @@ jobs:
         run: |
           pwd
           ls -lh
+      
+      - name: Serve files
+        uses: Eun/http-server-action@v1
+        with:
+          directory: ${{ github.workspace }}/files
+          port: 8140
+
+      - name: check webserver
+        run: | 
+          curl http://localhost:8140/packages/current/install.bash
