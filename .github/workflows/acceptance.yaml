@@ -27,3 +27,8 @@ jobs:
           echo ::group::bundler environment
           bundle env
           echo ::endgroup::
+
+      - name: print file info
+        run: | 
+          pwd
+          ls -lh
