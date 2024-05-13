@@ -84,5 +84,6 @@ jobs:
 
       - name: check if bolt avaliable
         run: | 
-          bundle exec bolt --modulepath ./ task show
+          bundle exec bolt --modulepath spec/fixtures/modules task show
+          ls -lh spec/fixtures/modules
           bundle list
