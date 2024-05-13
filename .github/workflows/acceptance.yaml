@@ -52,10 +52,10 @@ jobs:
     needs:
       - setup_vm
     runs-on: ubuntu-22.04
-    if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
+    if: ${{ needs.setup_vm.outputs.matrix != '{}' }}
     strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+      matrix: ${{fromJson(needs.setup_vm.outputs.matrix)}}
 
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
