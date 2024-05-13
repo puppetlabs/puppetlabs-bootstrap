@@ -6,12 +6,24 @@ on:
       - feature_*
 
 jobs:
-  Run-npm-on-Ubuntu:
+  setup_vm:
     name: Run npm on Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
         with:
-          node-version: '14'
-      - run: npm help
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
