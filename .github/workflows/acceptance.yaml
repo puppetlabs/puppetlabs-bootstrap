@@ -29,6 +29,6 @@ jobs:
           echo ::endgroup::
 
       - name: print file info
-        run: | 
+        run: |
           pwd
           ls -lh
