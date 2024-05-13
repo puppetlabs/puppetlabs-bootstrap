@@ -82,8 +82,11 @@ jobs:
         run: |
           bundle exec rake spec_prep
 
-      - name: check if bolt avaliable
+      - name: check if bolt available
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules task show
           ls -lh spec/fixtures/modules
-          bundle list
+      
+      - name: run bootstrap task
+        run: |
+          bundle exec bolt task run bootstrap --targets localhost master=losthost cername=testing123.com

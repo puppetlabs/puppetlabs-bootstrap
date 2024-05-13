@@ -5,3 +5,5 @@ fixtures:
     puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
     provision: 'https://github.com/puppetlabs/provision.git'
     deploy_pe: "https://github.com/jarretlavallee/puppet-deploy_pe"
+  forge_modules:
+    ruby_task_helper: "puppetlabs/ruby_task_helper"
