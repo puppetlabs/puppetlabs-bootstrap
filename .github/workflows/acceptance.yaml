@@ -45,4 +45,5 @@ jobs:
 
       - name: check webserver
         run: | 
+          pwd
           curl https://localhost:8140/packages/current/install.bash -k
