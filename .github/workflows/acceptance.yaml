@@ -33,12 +33,16 @@ jobs:
           pwd
           ls -lh
       
-      - name: Serve files
-        uses: Eun/http-server-action@v1
-        with:
-          directory: ${{ github.workspace }}/files
-          port: 8140
+      - name: Create webserver
+        run: |
+          mkdir /web
+          cd /web
+          wget https://github.com/rif/spark/releases/download/v1.8.1/spark_1.8.1_linux_amd64.tar.gz
+          tar -xf spark_1.8.1_linux_amd64.tar.gz
+          openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt -subj '/CN=localhost/O=Testing/C=US'
+          cp ${{ github.workspace }}/files/install.bash /web/
+          nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt & 
 
       - name: check webserver
         run: | 
-          curl https://localhost:8140/packages/current/install.bash
+          curl https://localhost:8140/packages/current/install.bash -k
