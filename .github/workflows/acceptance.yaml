@@ -92,7 +92,7 @@ jobs:
           id
           sudo bash
           id
-          cat /etc/sudoers
+          sudo cat /etc/sudoers
       
       - name: run bootstrap task
         run: |
