@@ -84,7 +84,7 @@ jobs:
 
       - name: check if bolt available
         run: | 
-          bundle exec bolt --modulepath spec/fixtures/modules task show
+          sudo /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task show
           ls -lh spec/fixtures/modules
 
       - name: check user running as
@@ -97,4 +97,4 @@ jobs:
       
       - name: run bootstrap task
         run: |
-          sudo bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost master=losthost certname=testing123.com
+          sudo /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost master=losthost certname=testing123.com
