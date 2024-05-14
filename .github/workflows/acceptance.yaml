@@ -34,8 +34,8 @@ jobs:
   #         ls -lh
 
   Integration:
-    needs:
-      - setup_vm
+    # needs:
+    #   - setup_vm
     runs-on: ubuntu-22.04
     # if: ${{ needs.setup_vm.outputs.matrix != '{}' }}
     # strategy:
