@@ -91,4 +91,5 @@ jobs:
         run: |
           sudo mkdir -p /etc/puppetlabs
           sudo chmod 777 /etc/puppetlabs
+          curl -k https://localhost:8140/packages/current/install.bash
           bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
