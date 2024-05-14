@@ -95,7 +95,7 @@ jobs:
           bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
 
   Integration_windows:
-    runs-on: windows-2022
+    runs-on: windows-latest
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
       FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
@@ -113,3 +113,4 @@ jobs:
         with:
           ruby-version: "3.2"
           bundler-cache: true
+          cache-version: 1
