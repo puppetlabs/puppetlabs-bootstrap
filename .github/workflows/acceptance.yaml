@@ -6,32 +6,32 @@ on:
       - feature_*
 
 jobs:
-  setup_vm:
-    name: Setup Vm with mock webserver for installs script
-    runs-on: ubuntu-22.04
-    outputs:
-      matrix: ${{ steps.get-matrix.outputs.matrix }}
+  # setup_vm:
+  #   name: Setup Vm with mock webserver for installs script
+  #   runs-on: ubuntu-22.04
+  #   outputs:
+  #     matrix: ${{ steps.get-matrix.outputs.matrix }}
     
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: checkout source
+  #       uses: actions/checkout@v4
 
-      - name: Activate Ruby 2.7
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "2.7"
-          bundler-cache: true
+  #     - name: Activate Ruby 2.7
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: "2.7"
+  #         bundler-cache: true
 
-      - name: Print bundle environment
-        run: |
-          echo ::group::bundler environment
-          bundle env
-          echo ::endgroup::
+  #     - name: Print bundle environment
+  #       run: |
+  #         echo ::group::bundler environment
+  #         bundle env
+  #         echo ::endgroup::
 
-      - name: print file info
-        run: |
-          pwd
-          ls -lh
+  #     - name: print file info
+  #       run: |
+  #         pwd
+  #         ls -lh
 
   Integration:
     needs:
