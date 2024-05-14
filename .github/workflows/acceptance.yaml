@@ -93,6 +93,7 @@ jobs:
           sudo bash
           id
           sudo cat /etc/sudoers
+          which bundle
       
       - name: run bootstrap task
         run: |
