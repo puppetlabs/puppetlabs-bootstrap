@@ -96,4 +96,4 @@ jobs:
       
       - name: run bootstrap task
         run: |
-          bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost master=losthost certname=testing123.com
+          sudo bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost master=losthost certname=testing123.com
