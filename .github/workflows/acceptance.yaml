@@ -33,14 +33,10 @@ jobs:
   #         pwd
   #         ls -lh
 
-  Integration:
+  Integration_linux:
     # needs:
     #   - setup_vm
-    # runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        os: [ubuntu-22.04,ubuntu-20.04,windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     # if: ${{ needs.setup_vm.outputs.matrix != '{}' }}
     # strategy:
     #   fail-fast: false
@@ -97,3 +93,20 @@ jobs:
           sudo chmod 777 /etc/puppetlabs
           curl -k https://localhost:8140/packages/current/install.bash
           bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
+
+  Integration_windows:
+    runs-on: windows-2022
+    env:
+      PUPPET_GEM_VERSION: '~> 7.24'
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
