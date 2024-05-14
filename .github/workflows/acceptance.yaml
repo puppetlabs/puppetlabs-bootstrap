@@ -36,7 +36,11 @@ jobs:
   Integration:
     # needs:
     #   - setup_vm
-    runs-on: ubuntu-22.04
+    # runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: [ubuntu-22.04,ubuntu-20.04,windows-latest]
+    runs-on: ${{ matrix.os }}
     # if: ${{ needs.setup_vm.outputs.matrix != '{}' }}
     # strategy:
     #   fail-fast: false
