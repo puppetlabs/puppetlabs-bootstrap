@@ -108,8 +108,8 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v4
 
-      - name: Activate Ruby 2.7
+      - name: Activate Ruby 3.2
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7"
+          ruby-version: "3.2"
           bundler-cache: true
