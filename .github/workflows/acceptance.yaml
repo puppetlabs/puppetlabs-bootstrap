@@ -86,6 +86,12 @@ jobs:
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules task show
           ls -lh spec/fixtures/modules
+
+      - name: check user running as
+        run: | 
+          id
+          sudo bash
+          id
       
       - name: run bootstrap task
         run: |
