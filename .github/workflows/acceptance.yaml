@@ -85,6 +85,7 @@ jobs:
       - name: check if bolt available
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules plan show
+          which bundle
           sudo PATH=$PATH bundle exec bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
       
