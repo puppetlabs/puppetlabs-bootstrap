@@ -75,6 +75,7 @@ jobs:
 
       - name: check sudo settings
         run: |
+          sudo sed -i '/Defaults	env_reset//' /etc/sudoers
           sudo cat /etc/sudoers
           sudo find /etc/sudoers.d/ -exec cat {} \;
 
