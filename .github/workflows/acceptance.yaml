@@ -85,7 +85,7 @@ jobs:
       - name: check if bolt available
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules plan show
-          sudo -E bash bundle exec bolt --modulepath spec/fixtures/modules plan show
+          sudo PATH=$PATH bundle exec bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
       
       - name: run bootstrap task
