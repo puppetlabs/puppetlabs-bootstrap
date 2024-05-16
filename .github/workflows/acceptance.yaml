@@ -63,15 +63,15 @@ jobs:
           bundle env
           echo ::endgroup::
 
-      - name: Create webserver
-        run: |
-          mkdir ./web
-          cd ./web
-          wget https://github.com/rif/spark/releases/download/v1.8.1/spark_1.8.1_linux_amd64.tar.gz
-          tar -xf spark_1.8.1_linux_amd64.tar.gz
-          openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt -subj '/CN=localhost/O=Testing/C=US'
-          cp ${{ github.workspace }}/files/install.bash ./
-          nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt &
+      # - name: Create webserver
+      #   run: |
+      #     mkdir ./web
+      #     cd ./web
+      #     wget https://github.com/rif/spark/releases/download/v1.8.1/spark_1.8.1_linux_amd64.tar.gz
+      #     tar -xf spark_1.8.1_linux_amd64.tar.gz
+      #     openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt -subj '/CN=localhost/O=Testing/C=US'
+      #     cp ${{ github.workspace }}/files/install.bash ./
+      #     nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt &
 
       - name: check sudo settings
         run: |
@@ -94,13 +94,15 @@ jobs:
           which bundle
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
-      
+
+      - name: install pe
+        run: |
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt plan run deploy_pe::provision_master --targets localhost version=2021.7.8
+
       - name: run bootstrap task
         run: |
-          sudo mkdir -p /etc/puppetlabs
-          sudo chmod 777 /etc/puppetlabs
           curl -k https://localhost:8140/packages/current/install.bash
-          bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
 
   # Integration_windows:
   #   runs-on: windows-latest
