@@ -71,7 +71,7 @@ jobs:
           tar -xf spark_1.8.1_linux_amd64.tar.gz
           openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt -subj '/CN=localhost/O=Testing/C=US'
           cp ${{ github.workspace }}/files/install.bash ./
-          nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt & 
+          nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt &
 
       - name: check webserver
         run: | 
@@ -84,7 +84,7 @@ jobs:
 
       - name: check if bolt available
         run: | 
-          bundle exec bolt --modulepath spec/fixtures/modules task show
+          bundle exec bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
       
       - name: run bootstrap task
