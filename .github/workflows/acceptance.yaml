@@ -73,6 +73,11 @@ jobs:
           cp ${{ github.workspace }}/files/install.bash ./
           nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt &
 
+      - name: check sudo settings
+        run: |
+          cat /etc/sudoers
+          find /etc/sudoers.d/ -exec cat {} \;
+
       - name: check webserver
         run: | 
           pwd
