@@ -75,8 +75,8 @@ jobs:
 
       - name: check sudo settings
         run: |
-          cat /etc/sudoers
-          find /etc/sudoers.d/ -exec cat {} \;
+          sudo cat /etc/sudoers
+          sudo find /etc/sudoers.d/ -exec cat {} \;
 
       - name: check webserver
         run: | 
