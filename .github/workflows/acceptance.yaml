@@ -79,10 +79,10 @@ jobs:
           sudo cat /etc/sudoers
           sudo find /etc/sudoers.d/ -exec cat {} \;
 
-      - name: check webserver
-        run: | 
-          pwd
-          curl https://localhost:8140/packages/current/install.bash -k
+      # - name: check webserver
+      #   run: | 
+      #     pwd
+      #     curl https://localhost:8140/packages/current/install.bash -k
 
       - name: Create the fixtures directory
         run: |
