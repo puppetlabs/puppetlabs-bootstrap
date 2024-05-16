@@ -86,7 +86,7 @@ jobs:
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules plan show
           which bundle
-          sudo PATH=$PATH bundle exec bolt --modulepath spec/fixtures/modules plan show
+          sudo PATH=$PATH /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
       
       - name: run bootstrap task
