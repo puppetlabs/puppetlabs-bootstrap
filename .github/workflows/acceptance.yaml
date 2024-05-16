@@ -97,7 +97,7 @@ jobs:
 
       - name: install pe
         run: |
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt plan run deploy_pe::provision_master --targets localhost version=2021.7.8
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master --targets localhost version=2021.7.8
 
       - name: run bootstrap task
         run: |
