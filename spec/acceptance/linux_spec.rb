@@ -25,7 +25,7 @@ describe 'bootstrap task' do
   # end
 
   before(:all) do
-    # bolt_config = { 'modulepath' => RSpec.configuration.module_path }
+    bolt_config = { 'modulepath' => RSpec.configuration.module_path }
     result = run_plan('deploy_pe::provision_master', 'targets' => 'localhost', 'version' => '2021.7.8')
     expect(result['status']).to eq('success')
   end
