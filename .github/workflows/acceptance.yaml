@@ -88,11 +88,19 @@ jobs:
         run: |
           bundle exec rake spec_prep
 
+      - name: install actual bolt
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-jammy.deb
+          sudo -E dpkg -i puppet-tools-release-jammy.deb
+          sudo -E apt-get update 
+          sudo -E apt-get install puppet-bolt
+
       - name: check if bolt available
         run: | 
           bundle exec bolt --modulepath spec/fixtures/modules plan show
           which bundle
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
           ls -lh spec/fixtures/modules
 
       - name: install pe
@@ -100,10 +108,10 @@ jobs:
           echo -e 'groups:\n  - name: pe\n    targets:\n      - 127.0.0.1' > inventory.yaml
           cat inventory.yaml
           cat /etc/hosts
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
           # sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run service name=sshd action=status -t pe
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
 
       - name: run bootstrap task
         run: |
