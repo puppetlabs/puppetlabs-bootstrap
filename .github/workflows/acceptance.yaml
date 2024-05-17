@@ -6,41 +6,9 @@ on:
       - feature_*
 
 jobs:
-  # setup_vm:
-  #   name: Setup Vm with mock webserver for installs script
-  #   runs-on: ubuntu-22.04
-  #   outputs:
-  #     matrix: ${{ steps.get-matrix.outputs.matrix }}
-    
-  #   steps:
-  #     - name: checkout source
-  #       uses: actions/checkout@v4
-
-  #     - name: Activate Ruby 2.7
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: "2.7"
-  #         bundler-cache: true
-
-  #     - name: Print bundle environment
-  #       run: |
-  #         echo ::group::bundler environment
-  #         bundle env
-  #         echo ::endgroup::
-
-  #     - name: print file info
-  #       run: |
-  #         pwd
-  #         ls -lh
 
   Integration_linux:
-    # needs:
-    #   - setup_vm
     runs-on: ubuntu-22.04
-    # if: ${{ needs.setup_vm.outputs.matrix != '{}' }}
-    # strategy:
-    #   fail-fast: false
-    #   matrix: ${{fromJson(needs.setup_vm.outputs.matrix)}}
 
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
@@ -63,26 +31,11 @@ jobs:
           bundle env
           echo ::endgroup::
 
-      # - name: Create webserver
+      # - name: modify sudo settings
       #   run: |
-      #     mkdir ./web
-      #     cd ./web
-      #     wget https://github.com/rif/spark/releases/download/v1.8.1/spark_1.8.1_linux_amd64.tar.gz
-      #     tar -xf spark_1.8.1_linux_amd64.tar.gz
-      #     openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt -subj '/CN=localhost/O=Testing/C=US'
-      #     cp ${{ github.workspace }}/files/install.bash ./
-      #     nohup ./spark -port 8141 -sslPort 8140 -path /packages/current/ -key localhost.key -cert localhost.crt &
-
-      - name: check sudo settings
-        run: |
-          sudo sed -i 's/Defaults	env_reset//' /etc/sudoers
-          sudo cat /etc/sudoers
-          sudo find /etc/sudoers.d/ -exec cat {} \;
-
-      # - name: check webserver
-      #   run: | 
-      #     pwd
-      #     curl https://localhost:8140/packages/current/install.bash -k
+      #     sudo sed -i 's/Defaults	env_reset//' /etc/sudoers
+      #     sudo cat /etc/sudoers
+      #     sudo find /etc/sudoers.d/ -exec cat {} \;
 
       - name: Create the fixtures directory
         run: |
@@ -105,11 +58,10 @@ jobs:
 
       - name: install pe
         run: |
-          echo -e 'groups:\n  - name: pe\n    targets:\n      - 127.0.0.1' > inventory.yaml
+          echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
           cat inventory.yaml
           cat /etc/hosts
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
-          # sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run service name=sshd action=status -t pe
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
 
