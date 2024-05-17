@@ -99,6 +99,7 @@ jobs:
         run: |
           echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
           cat inventory.yaml
+          cat /etc/hosts
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
           # sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run service name=sshd action=status -t pe
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run facts -t pe
