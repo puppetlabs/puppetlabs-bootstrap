@@ -12,8 +12,7 @@ jobs:
 
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
-      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
-
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'
 
     steps:
       - name: checkout source
@@ -47,27 +46,18 @@ jobs:
           sudo -E dpkg -i puppet-tools-release-jammy.deb
           sudo -E apt-get update 
           sudo -E apt-get -y install puppet-bolt
-
-      - name: check if bolt available
-        run: | 
-          bundle exec bolt --modulepath spec/fixtures/modules plan show
-          which bundle
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
-          ls -lh spec/fixtures/modules
 
       - name: install pe
         run: |
           echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
-          cat inventory.yaml
-          cat /etc/hosts
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
           sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
 
       - name: run bootstrap task
         run: |
-          curl -k https://localhost:8140/packages/current/install.bash
+          curl -k https://localhost:8140/packages/current/install.bash -I
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
 
   # Integration_windows:
