@@ -102,8 +102,8 @@ jobs:
           cat /etc/hosts
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
           # sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run service name=sshd action=status -t pe
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run facts --target localhost
-          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master --target localhost version=2021.7.8
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
 
       - name: run bootstrap task
         run: |
