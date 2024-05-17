@@ -93,7 +93,7 @@ jobs:
           wget https://apt.puppet.com/puppet-tools-release-jammy.deb
           sudo -E dpkg -i puppet-tools-release-jammy.deb
           sudo -E apt-get update 
-          sudo -E apt-get install puppet-bolt
+          sudo -E apt-get -y install puppet-bolt
 
       - name: check if bolt available
         run: | 
