@@ -30,6 +30,8 @@ describe 'bootstrap task' do
   before(:all) do
     bolt_config = { 'modulepath' => RSpec.configuration.module_path }
     bootstrap_dir = File.join(RSpec.configuration.module_path, '../docker_provision')
+    puts bolt_config
+    puts bootstrap_dir
     result = run_plan('deploy_pe::provision_master', 'targets' => 'localhost', 'version' => '2021.7.8')
     expect(result['status']).to eq('success')
   end
