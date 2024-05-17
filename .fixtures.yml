@@ -11,3 +11,6 @@ fixtures:
   forge_modules:
     ruby_task_helper: "puppetlabs/ruby_task_helper"
     stdlib: "puppetlabs/stdlib"
+    ruby_plugin_helper:
+      repo: "puppetlabs/ruby_plugin_helper"
+      ref: "0.2.0"
