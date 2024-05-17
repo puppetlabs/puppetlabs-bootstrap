@@ -97,7 +97,7 @@ jobs:
 
       - name: install pe
         run: |
-          echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
+          echo -e 'groups:\n  - name: pe\n    targets:\n      - 127.0.0.1' > inventory.yaml
           cat inventory.yaml
           cat /etc/hosts
           sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules plan show
