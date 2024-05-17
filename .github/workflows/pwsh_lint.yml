@@ -1,0 +1,28 @@
+---
+name: "pwsh_lint"
+
+on:
+  push:
+    branches:
+      - feature_*
+
+jobs:
+  pwsh_lint:
+    runs-on: windows-latest
+
+    steps:
+      - name: enable long file path
+        run: |
+          New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: install PSScriptAnalyzer
+        run: |
+          Install-Module -Name PSScriptAnalyzer -RequiredVersion 1.21.0
+          Get-InstalledModule
+
+      - name: pwsh lint check
+        run: |
+          Invoke-ScriptAnalyzer -Recurse -EnableExit -Path .\tasks -ReportSummary
