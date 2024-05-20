@@ -1,6 +1,6 @@
 [CmdletBinding()]
 # Suppress some linter warnings
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunction', '', Scope='Function', Target='*')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='*')]
 Param(
   [Parameter(Mandatory = $True)]
   [String]
