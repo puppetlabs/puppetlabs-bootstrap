@@ -2,9 +2,9 @@
 name: "pwsh_lint"
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature_*
+      - "main"
 
 jobs:
   pwsh_lint:
