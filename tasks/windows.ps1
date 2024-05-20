@@ -213,8 +213,8 @@ try
 
   $options = @{
     Master = $Master
-    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
-    CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
+    CertName = ($PSBoundParameters['CertName'], $null -ne (Get-HostName))[0].ToLower()
+    CACertContent = ($PSBoundParameters['CACertContent'], $null -ne (Get-CA -Master $Master))[0]
     ExtraConfig = @{}
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
@@ -235,7 +235,12 @@ try
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-  
+
+  # Suppress some linter warnings
+  [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunction', '',
+    Scope='Function', Target='*')]
+  Param()
+
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
@@ -245,7 +250,7 @@ try
 
   # TODO: could use ConvertTo-Json, but that requires PS3
   # if embedding in literal, should make sure Name / Status doesn't need escaping
-  Write-Host @"
+  Write-Output @"
 {
   "host"     : "$jsonHostName",
   "certname" : "$jsonCertName",
@@ -258,7 +263,7 @@ try
 }
 catch
 {
-  Write-Host @"
+  Write-Output @"
   {
     "status"   : "failure",
     "host"     : "$jsonHostName",
