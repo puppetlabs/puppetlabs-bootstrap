@@ -215,8 +215,8 @@ try
 
   $options = @{
     Master = $Master
-    CertName = ($PSBoundParameters['CertName'], $null -ne (Get-HostName))[0].ToLower()
-    CACertContent = ($PSBoundParameters['CACertContent'], $null -ne (Get-CA -Master $Master))[0]
+    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null )[0].ToLower()
+    CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null )[0]
     ExtraConfig = @{}
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
