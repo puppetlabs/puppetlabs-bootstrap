@@ -1,5 +1,6 @@
 # Suppress some linter warnings
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunction', '', Scope='Function', Target='*')]
+param()
 [CmdletBinding()]
 Param(
   [Parameter(Mandatory = $True)]
@@ -19,7 +20,7 @@ Param(
   $CertName,
 
   [Parameter(Mandatory = $False)]
-  [ValidateScript({ $_ -split ',' | % {
+  [ValidateScript({ $_ -split ',' | ForEach-Object {
     if ([System.URI]::CheckHostName($_) -ne 'Dns') {
       throw "Invalid DNS name `"$_`""
   }}; $True})]
@@ -62,8 +63,8 @@ function Set-SecurityProtocol {
 function Get-HostName
 {
   $ipAddress = ([System.Net.Dns]::GetHostEntry([System.Environment]::MachineName)).AddressList |
-    ? { $_.AddressFamily -eq 'InterNetwork' } |
-    Select -First 1 -ExpandProperty IPAddressToString
+    Where-Object { $_.AddressFamily -eq 'InterNetwork' } |
+    Select-Object -First 1 -ExpandProperty IPAddressToString
 
   $name = [System.Net.Dns]::GetHostEntry($ipAddress).HostName
   Write-Verbose "Resolved current hostname to $name"
@@ -173,14 +174,14 @@ function ConvertTo-JsonString($string)
 function New-OptionsHash($Prefix, $Values)
 {
   $hash = @{}
-  $Values | % { $k, $v = $_ -split '=',2; $hash."$Prefix`:$k" = $v }
+  $Values | ForEach-Object { $k, $v = $_ -split '=',2; $hash."$Prefix`:$k" = $v }
   $hash
 }
 
 function New-OptionsStringHash($Values)
 {
   $hash = @{}
-  $Values | % { $k, $v = $_ -split '=',2; $hash."$k" = $v }
+  $Values | ForEach-Object { $k, $v = $_ -split '=',2; $hash."$k" = $v }
   $hash
 }
 
@@ -202,7 +203,7 @@ function Invoke-SimplifiedInstaller
 
   $ExtraConfig.Add('agent:certname', $CertName)
   $installerArgs = @{
-    Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
+    Arguments = $ExtraConfig.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
@@ -241,7 +242,7 @@ try
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
-    % { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
+    ForEach-Object { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
   $jsonHostName = ConvertTo-JsonString (Get-HostName)
   $jsonCertName = ConvertTo-JsonString $options.CertName
 
