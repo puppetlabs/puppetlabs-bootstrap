@@ -1,3 +1,5 @@
+# Suppress some linter warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunction', '', Scope='Function', Target='*')]
 [CmdletBinding()]
 Param(
   [Parameter(Mandatory = $True)]
@@ -235,11 +237,6 @@ try
   if ($PSBoundParameters.ContainsKey('Set_Noop')) {
     $options.ExtraConfig += @{ 'agent:noop' = "$Set_Noop".ToLower() }
   }
-
-  # Suppress some linter warnings
-  [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunction', '',
-    Scope='Function', Target='*')]
-  Param()
 
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
