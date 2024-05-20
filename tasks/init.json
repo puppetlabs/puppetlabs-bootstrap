@@ -36,7 +36,7 @@
     },
     "puppet_conf_settings": {
       "description": "Puppet conf settings. See https://www.puppet.com/docs/pe/2021.7/installing_nix_and_windows_agents_using_an_install_script.html#customize-install-script for usage instructions",
-      "type": "Optional[Array[Pattern[/\\w+:\\w+=\\w+/]]]"
+      "type": "Optional[Array[Pattern[/\\w+:\\w+=.*/]]]"
     }
   },
   "extensions": {
