@@ -1,5 +1,7 @@
 # run a test task
 require 'spec_helper_acceptance'
+require 'bolt_spec/run'
+require 'open3'
 
 def return_hostname
   host = if pe_install?

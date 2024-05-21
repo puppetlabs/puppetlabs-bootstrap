@@ -1,107 +1,80 @@
-name: "Integration Testing"
+name: "integration"
 
-on: 
+on:
   pull_request:
     branches:
       - "main"
-  workflow_call:
-  workflow_dispatch:
 
 jobs:
-  setup_matrix:
-    name: "Setup Test Matrix"
-    runs-on: ubuntu-20.04
-    outputs:
-      matrix: ${{ steps.get-matrix.outputs.matrix }}
 
-    steps:
-    - name: Checkout Source
-      uses: actions/checkout@v3
-      if: ${{ github.repository_owner == 'puppetlabs' }}
-
-    - name: Activate Ruby 2.7
-      uses: ruby/setup-ruby@v1
-      if: ${{ github.repository_owner == 'puppetlabs' }}
-      with:
-        ruby-version: "2.7"
-        bundler-cache: true
-
-    - name: Print bundle environment
-      if: ${{ github.repository_owner == 'puppetlabs' }}
-      run: |
-        echo ::group::bundler environment
-        bundle env
-        echo ::endgroup::
-
-    - name: Setup Integration Test Matrix
-      id: get-matrix
-      run: |
-        if [ '${{ github.repository_owner }}' == 'puppetlabs' ]; then
-          echo  "matrix={'platform':['centos-7'],'collection':['puppet7-nightly', 'puppet8-nightly']}" >> $GITHUB_OUTPUT
-        else
-          echo  "matrix={}"  >> $GITHUB_OUTPUT
-        fi
-
-  Integration:
-    needs:
-      - setup_matrix
-    if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
-
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+  Integration_linux:
+    runs-on: ubuntu-22.04
 
     env:
       PUPPET_GEM_VERSION: '~> 7.24'
-      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'
 
     steps:
+      - name: checkout source
+        uses: actions/checkout@v4
 
-    - name: Checkout Source
-      uses: actions/checkout@v3
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
 
-    - name: Activate Ruby 2.7
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: "2.7"
-        bundler-cache: true
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
 
-    - name: Print bundle environment
-      run: |
-        echo ::group::bundler environment
-        bundle env
-        echo ::endgroup::
+      - name: modify sudo settings
+        run: |
+          sudo sed -i 's/Defaults	env_reset//' /etc/sudoers
 
-    - name: Create the fixtures directory
-      run: |
-        bundle exec rake spec_prep
+      - name: Create the fixtures directory
+        run: |
+          bundle exec rake spec_prep
 
-    - name: Provision test environment
-      run: |
-        bundle exec bolt --modulepath spec/fixtures/modules plan run ntp::acceptance::provision_integration image=${{ matrix.platform }}
-        # Redact password
-        FILE='spec/fixtures/litmus_inventory.yaml'
-        sed -e 's/password: .*/password: "[redacted]"/' < $FILE || true
+      - name: install actual bolt
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-jammy.deb
+          sudo -E dpkg -i puppet-tools-release-jammy.deb
+          sudo -E apt-get update 
+          sudo -E apt-get -y install puppet-bolt
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
 
-    - name: Install PE
-      run: |
-        bundle exec bolt --modulepath spec/fixtures/modules -i ./spec/fixtures/litmus_inventory.yaml plan run ntp::acceptance::pe_server
+      - name: install pe
+        run: |
+          echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
 
-    - name: Install Agents
-      run: |
-        bundle exec bolt --modulepath spec/fixtures/modules -i ./spec/fixtures/litmus_inventory.yaml plan run ntp::acceptance::pe_agent
+      - name: run bootstrap task
+        run: |
+          curl -k https://localhost:8140/packages/current/install.bash -I
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
 
-    - name: Install module
-      run: |
-        bundle exec rake 'litmus:install_module'
+  # Integration_windows: Currently no way to test Windows agent installation.
+  #   runs-on: windows-latest
+  #   env:
+  #     PUPPET_GEM_VERSION: '~> 7.24'
+  #     FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
 
-    - name: Run integration tests
-      run: |
-        bundle exec rake ntp:integration
 
-    - name: Remove test environment
-      if: ${{ always() }}
-      continue-on-error: true
-      run: |
-        bundle exec rake 'litmus:tear_down'
+  #   steps:
+  #     - name: enable long file path
+  #       run: |
+  #         New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+  #     - name: checkout source
+  #       uses: actions/checkout@v4
+
+  #     - name: Activate Ruby 3.2
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: "3.2"
+  #         bundler-cache: true
+  #         cache-version: 1
