@@ -1,0 +1,80 @@
+name: "integration"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+
+  Integration_linux:
+    runs-on: ubuntu-22.04
+
+    env:
+      PUPPET_GEM_VERSION: '~> 7.24'
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'
+
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: modify sudo settings
+        run: |
+          sudo sed -i 's/Defaults	env_reset//' /etc/sudoers
+
+      - name: Create the fixtures directory
+        run: |
+          bundle exec rake spec_prep
+
+      - name: install actual bolt
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-jammy.deb
+          sudo -E dpkg -i puppet-tools-release-jammy.deb
+          sudo -E apt-get update 
+          sudo -E apt-get -y install puppet-bolt
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
+
+      - name: install pe
+        run: |
+          echo -e 'groups:\n  - name: pe\n    targets:\n      - localhost' > inventory.yaml
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan show
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run facts targets=localhost
+          sudo -E /usr/local/bin/bolt --modulepath spec/fixtures/modules plan run deploy_pe::provision_master targets=localhost version=2021.7.8
+
+      - name: run bootstrap task
+        run: |
+          curl -k https://localhost:8140/packages/current/install.bash -I
+          sudo -E /opt/hostedtoolcache/Ruby/2.7.8/x64/bin/bundle exec bolt --modulepath spec/fixtures/modules task run bootstrap --targets localhost  master=localhost certname=testing123.com
+
+  # Integration_windows: Currently no way to test Windows agent installation.
+  #   runs-on: windows-latest
+  #   env:
+  #     PUPPET_GEM_VERSION: '~> 7.24'
+  #     FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+
+  #   steps:
+  #     - name: enable long file path
+  #       run: |
+  #         New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+  #     - name: checkout source
+  #       uses: actions/checkout@v4
+
+  #     - name: Activate Ruby 3.2
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: "3.2"
+  #         bundler-cache: true
+  #         cache-version: 1

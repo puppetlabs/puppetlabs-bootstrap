@@ -7,6 +7,13 @@ validate() {
   fi
 }
 
+verify_prereqs() {
+  if ! which tar > /dev/null 2>&1 ; then
+    echo "tar not found, tar is required for Puppet installation"
+    exit 1
+  fi
+}
+
 convert_array_string() {
   array_string=$2
   array_string=${array_string// /}
@@ -24,6 +31,25 @@ convert_array_string() {
   echo $result
 }
 
+convert_array_string_puppet_conf() {
+  array_string=$2
+  array_string=${array_string// /}
+  array_string=${array_string//\",\"/ }
+
+  array_string=${array_string##[}
+  array_string=${array_string%]}
+  array_string=${array_string//\"/ }
+
+  eval array=($array_string)
+
+  for item in "${array[@]}"
+  do
+    result="${result} $item "
+  done
+  echo $result
+}
+
+
 master="$PT_master"
 cacert_content="$PT_cacert_content"
 certname="$PT_certname"
@@ -32,11 +58,13 @@ set_noop="$PT_set_noop"
 alt_names="$PT_dns_alt_names"
 custom_attribute="$PT_custom_attribute"
 extension_request="$PT_extension_request"
+puppet_conf="$PT_puppet_conf_settings"
 
 validate $certname
 validate $environment
 validate $set_noop
 validate $alt_names
+verify_prereqs
 
 if [ -n "${certname?}" ] ; then
   certname_arg="agent:certname='${certname}' "
@@ -56,6 +84,9 @@ fi
 if [ -n "${extension_request?}" ] ; then
   extension_requests_arg="$(convert_array_string extension_requests "${extension_request}") "
 fi
+if [ -n "${puppet_conf?}" ] ; then
+  puppet_conf_arg="$(convert_array_string_puppet_conf -s "${puppet_conf}") "
+fi
 
 set -e
 
@@ -68,7 +99,7 @@ else
 fi
 
 if curl ${curl_arg?} https://${master}:8140/packages/current/install.bash -o /tmp/install.bash; then
-  if bash /tmp/install.bash ${certname_arg}${environment_arg}${set_noop_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}; then
+  if bash /tmp/install.bash ${certname_arg}${environment_arg}${set_noop_arg}${alt_names_arg}${custom_attributes_arg}${extension_requests_arg}${puppet_conf_arg}; then
     echo "Installed"
     exit 0
   else

@@ -1,4 +1,7 @@
 [CmdletBinding()]
+# Suppress some linter warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='*')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSPossibleIncorrectComparisonWithNull', '')]
 Param(
   [Parameter(Mandatory = $True)]
   [String]
@@ -17,7 +20,7 @@ Param(
   $CertName,
 
   [Parameter(Mandatory = $False)]
-  [ValidateScript({ $_ -split ',' | % {
+  [ValidateScript({ $_ -split ',' | ForEach-Object {
     if ([System.URI]::CheckHostName($_) -ne 'Dns') {
       throw "Invalid DNS name `"$_`""
   }}; $True})]
@@ -40,7 +43,12 @@ Param(
   [Parameter(Mandatory = $False)]
   [ValidateScript({ $_ -match '\w+=\w+' })]
   [String[]]
-  $Extension_Request
+  $Extension_Request,
+
+  [Parameter(Mandatory = $False)]
+  [ValidateScript({ $_ -match '\w+:\w+=\w+' })]
+  [String[]]
+  $Puppet_Conf_Settings
 )
 
 function Set-SecurityProtocol {
@@ -55,8 +63,8 @@ function Set-SecurityProtocol {
 function Get-HostName
 {
   $ipAddress = ([System.Net.Dns]::GetHostEntry([System.Environment]::MachineName)).AddressList |
-    ? { $_.AddressFamily -eq 'InterNetwork' } |
-    Select -First 1 -ExpandProperty IPAddressToString
+    Where-Object { $_.AddressFamily -eq 'InterNetwork' } |
+    Select-Object -First 1 -ExpandProperty IPAddressToString
 
   $name = [System.Net.Dns]::GetHostEntry($ipAddress).HostName
   Write-Verbose "Resolved current hostname to $name"
@@ -97,7 +105,6 @@ function Get-InstallerScriptBlock($Master, $RootCertificate)
   {
     $customCACallback = {
       param(
-        $sender,
         [System.Security.Cryptography.X509Certificates.X509Certificate]
         $certificate,
         [System.Security.Cryptography.X509Certificates.X509Chain]
@@ -166,7 +173,14 @@ function ConvertTo-JsonString($string)
 function New-OptionsHash($Prefix, $Values)
 {
   $hash = @{}
-  $Values | % { $k, $v = $_ -split '=',2; $hash."$Prefix`:$k" = $v }
+  $Values | ForEach-Object { $k, $v = $_ -split '=',2; $hash."$Prefix`:$k" = $v }
+  $hash
+}
+
+function New-OptionsStringHash($Values)
+{
+  $hash = @{}
+  $Values | ForEach-Object { $k, $v = $_ -split '=',2; $hash."$k" = $v }
   $hash
 }
 
@@ -188,7 +202,7 @@ function Invoke-SimplifiedInstaller
 
   $ExtraConfig.Add('agent:certname', $CertName)
   $installerArgs = @{
-    Arguments = $ExtraConfig.GetEnumerator() | % { "$($_.Key)=$($_.Value)" }
+    Arguments = $ExtraConfig.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
   }
 
   Write-Verbose "Calling installer ScriptBlock with arguments: $($installerArgs.Arguments)"
@@ -201,8 +215,8 @@ try
 
   $options = @{
     Master = $Master
-    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null)[0].ToLower()
-    CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null)[0]
+    CertName = ($PSBoundParameters['CertName'], (Get-HostName) -ne $null )[0].ToLower()
+    CACertContent = ($PSBoundParameters['CACertContent'], (Get-CA -Master $Master) -ne $null )[0]
     ExtraConfig = @{}
   }
   if ($PSBoundParameters.ContainsKey('DNS_Alt_Names')) {
@@ -214,6 +228,9 @@ try
   if ($PSBoundParameters.ContainsKey('Extension_Request')) {
     $options.ExtraConfig += (New-OptionsHash 'extension_requests' $Extension_Request)
   }
+  if ($PSBoundParameters.ContainsKey('Puppet_Conf_Settings')) {
+    $options.ExtraConfig += (New-OptionsStringHash $Puppet_Conf_Settings)
+  }
   if ($PSBoundParameters.ContainsKey('Environment')) {
     $options.ExtraConfig += @{ 'agent:environment' = "'$Environment'" }
   }
@@ -224,13 +241,13 @@ try
   $installerOutput = Invoke-SimplifiedInstaller @options
   $jsonOutput = ConvertTo-JsonString $installerOutput
   $jsonSafeConfig = $options.ExtraConfig.GetEnumerator() |
-    % { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
+    ForEach-Object { ConvertTo-JsonString "$($_.Key)=$($_.Value)" }
   $jsonHostName = ConvertTo-JsonString (Get-HostName)
   $jsonCertName = ConvertTo-JsonString $options.CertName
 
   # TODO: could use ConvertTo-Json, but that requires PS3
   # if embedding in literal, should make sure Name / Status doesn't need escaping
-  Write-Host @"
+  Write-Output @"
 {
   "host"     : "$jsonHostName",
   "certname" : "$jsonCertName",
@@ -243,7 +260,7 @@ try
 }
 catch
 {
-  Write-Host @"
+  Write-Output @"
   {
     "status"   : "failure",
     "host"     : "$jsonHostName",
