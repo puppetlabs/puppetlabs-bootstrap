@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.0.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v3.0.0) (2024-10-03)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/v2.1.0...v3.0.0)
+
+**Breaking changes:**
+
+- Bumped minimal Puppet version to 7. Drop support for unsupported operating systems [\#170](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/170) ([benjamin-robertson](https://github.com/benjamin-robertson))
+- pdksync - Remove Puppet 5 from testing and bump minimal version to 6.0.0 [\#159](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/159) ([carabasdaniel](https://github.com/carabasdaniel))
+
+**Closed issues:**
+
+- Add the ability to specify puppet.conf options to bootstrap task [\#166](https://github.com/puppetlabs/puppetlabs-bootstrap/issues/166)
+- Task fails with no descriptive error if tar isn't installed on target host. [\#156](https://github.com/puppetlabs/puppetlabs-bootstrap/issues/156)
+- Specifying extension requests and custom attributes as per README fails with data type validation error [\#80](https://github.com/puppetlabs/puppetlabs-bootstrap/issues/80)
+
+### Added
+
+- Added the ability to set puppet.conf settings via a parameter. [\#167](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/167) ([benjamin-robertson](https://github.com/benjamin-robertson))
+- add support clarification notice [\#164](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/164) ([binford2k](https://github.com/binford2k))
+- \(docs\) correct install docs link [\#163](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/163) ([binford2k](https://github.com/binford2k))
+- \[ISSUE-80\] Update the README to improve the instructions for use of ex… [\#162](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/162) ([nebakke](https://github.com/nebakke))
+- pdksync - Remove EL6 testing from Travis [\#158](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/158) ([carabasdaniel](https://github.com/carabasdaniel))
+- pdksync - \(IAC-973\) - Update travis/appveyor to run on new default branch main [\#147](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/147) ([david22swan](https://github.com/david22swan))
+- pdksync - \(IAC-890\) - Implement CentOS 8 travis tests [\#145](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/145) ([david22swan](https://github.com/david22swan))
+- pdksync - Use abs instead of vmpooler to provision test resources [\#144](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/144) ([carabasdaniel](https://github.com/carabasdaniel))
+- pdksync - \(maint\) - Pdk Update [\#143](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/143) ([david22swan](https://github.com/david22swan))
+- \(maint\) Update CODEOWNERS [\#142](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/142) ([DavidS](https://github.com/DavidS))
+- Ensure '$set\_noop' is lowercase for consistency [\#141](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/141) ([zoojar](https://github.com/zoojar))
+- pdksync - Add dependency gems to development group [\#140](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/140) ([carabasdaniel](https://github.com/carabasdaniel))
+- add set\_noop parameter [\#139](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/139) ([zoojar](https://github.com/zoojar))
+- \(MAINT\) Update docker image names [\#136](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/136) ([michaeltlombardi](https://github.com/michaeltlombardi))
+- \(IAC-555\) pdksync - Remove distelli-manifest.yml [\#135](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/135) ([david22swan](https://github.com/david22swan))
+- pdksync - \(maint\) - Pdk Update [\#134](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/134) ([david22swan](https://github.com/david22swan))
+- pdksync - Update weekly scheduled workflows [\#133](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/133) ([carabasdaniel](https://github.com/carabasdaniel))
+- pdksync - Add weekly scheduled workflows [\#130](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/130) ([carabasdaniel](https://github.com/carabasdaniel))
+- pdksync - \(IAC-215\) - Implement use\_litmus:true [\#129](https://github.com/puppetlabs/puppetlabs-bootstrap/pull/129) ([david22swan](https://github.com/david22swan))
+
 ## [v2.1.0](https://github.com/puppetlabs/puppetlabs-bootstrap/tree/v2.1.0) (2020-01-21)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-bootstrap/compare/v2.0.0...v2.1.0)
